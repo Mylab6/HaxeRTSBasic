@@ -10,6 +10,7 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
+import flixel.util.FlxTimer;
 
 class PlayState extends FlxState
 {
@@ -19,6 +20,9 @@ class PlayState extends FlxState
     private var projectiles:FlxGroup;
     private var bigBox:BigBox;
 
+	private var redBoxTimer:FlxTimer;
+	private var blueBoxTimer:FlxTimer;
+	private var greenBoxTimer:FlxTimer;
     override public function create():Void
     {
         super.create();
@@ -36,9 +40,16 @@ class PlayState extends FlxState
         bigBox = new BigBox(FlxG.width / 2 - 50, FlxG.height / 2 - 50, projectiles);
         add(bigBox);
 
-        spawnRedBox(50, 100);
-        spawnBlueBox(200, 100);
-        spawnGreenBox(350, 100);
+		redBoxTimer = new FlxTimer();
+		redBoxTimer.start(2, spawnRedBox, 0); // Spawn a red box every 2 seconds
+
+		blueBoxTimer = new FlxTimer();
+		blueBoxTimer.start(3, spawnBlueBox, 0); // Spawn a blue box every 3 seconds
+
+		greenBoxTimer = new FlxTimer();
+		greenBoxTimer.start(4, spawnGreenBox, 0); // Spawn a green box every 4 seconds
+   
+       
     }
 
     override public function update(elapsed:Float):Void
@@ -95,21 +106,27 @@ class PlayState extends FlxState
         }
     }
 
-    private function spawnRedBox(x:Float, y:Float):Void
-    {
-        var redBox = new RedBox(x, y);
-        redBoxes.add(redBox);
-    }
-
-    private function spawnBlueBox(x:Float, y:Float):Void
-    {
-        var blueBox = new BlueBox(x, y);
-        blueBoxes.add(blueBox);
-    }
-
-    private function spawnGreenBox(x:Float, y:Float):Void
-    {
-        var greenBox = new GreenBox(x, y);
-        greenBoxes.add(greenBox);
-    }
+	private function spawnRedBox(timer:FlxTimer):Void
+	{
+		var x = FlxG.random.float(0, FlxG.width - 50);
+		var y = FlxG.random.float(0, FlxG.height - 50);
+		var redBox = new RedBox(x, y);
+		redBoxes.add(redBox);
+	}
+    
+	private function spawnBlueBox(timer:FlxTimer):Void
+	{
+		var x = FlxG.random.float(0, FlxG.width - 50);
+		var y = FlxG.random.float(0, FlxG.height - 50);
+		var blueBox = new BlueBox(x, y);
+		blueBoxes.add(blueBox);
+	}
+    
+	private function spawnGreenBox(timer:FlxTimer):Void
+	{
+		var x = FlxG.random.float(0, FlxG.width - 50);
+		var y = FlxG.random.float(0, FlxG.height - 50);
+		var greenBox = new GreenBox(x, y);
+		greenBoxes.add(greenBox);
+	}
 }
