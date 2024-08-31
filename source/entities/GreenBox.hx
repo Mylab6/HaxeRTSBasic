@@ -9,7 +9,7 @@ class GreenBox extends FlxSprite
     public function new(x:Float, y:Float)
     {
         super(x, y);
-        makeGraphic(10, 10, FlxColor.GREEN);
+		makeGraphic(100, 100, FlxColor.GREEN);
     }
 
     public function updateBehavior(bigBox:BigBox):Void

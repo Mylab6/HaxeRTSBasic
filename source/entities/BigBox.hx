@@ -4,6 +4,7 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 
 class BigBox extends FlxSprite
 {
@@ -11,51 +12,75 @@ class BigBox extends FlxSprite
     public var fireRate:Float;
     private var timeSinceLastShot:Float;
     private var projectiles:FlxGroup;
+	private var cannonDisabled:Bool;
+	private var disableTimer:FlxTimer;
+
+	public var aimLine:FlxSprite; // Aiming line
 
     public function new(x:Float, y:Float, projectiles:FlxGroup)
     {
         super(x, y);
-		makeGraphic(300, 300, FlxColor.PURPLE);
+		makeGraphic(100, 100, FlxColor.BLUE);
         turretAngle = 0;
-        fireRate = 2.0; // Turret fires every 2 seconds
+		fireRate = 0.5; // Reduced for faster shooting
         timeSinceLastShot = 0;
-        this.projectiles = projectiles; // Store reference to projectiles group
+		this.projectiles = projectiles;
+		this.cannonDisabled = false;
+		this.disableTimer = new FlxTimer();
+
+		// Initialize the aim line
+		aimLine = new FlxSprite();
+		aimLine.makeGraphic(100, 2, FlxColor.RED); // Thin red line
+		aimLine.origin.set(0, 1); // Set the origin at the start of the line
     }
 
     public function updateTurret(elapsed:Float, target:FlxPoint):Void
     {
-        // Calculate the angle to the target
-        var targetAngle = Math.atan2(target.y - (y + height / 2), target.x - (x + width / 2));
+		if (cannonDisabled)
+			return;
 
-        // Interpolate the angle towards the target angle
-        turretAngle = lerpAngle(turretAngle, targetAngle, 0.05); // 0.05 is the rotation speed
+		// Recalculate the angle to the target each frame
+		turretAngle = Math.atan2(target.y - (y + height / 2), target.x - (x + width / 2));
 
-        // Shoot if turret is aligned and enough time has passed
+		// Update the aiming line to point in the correct direction
+		updateAimLine();
+
+		// Shoot if enough time has passed
         timeSinceLastShot += elapsed;
-        if (Math.abs(angleDifference(turretAngle, targetAngle)) < 0.1 && timeSinceLastShot >= fireRate)
+		if (timeSinceLastShot >= fireRate)
         {
-            shoot(target);
+			shoot();
             timeSinceLastShot = 0;
         }
     }
 
-    private function lerpAngle(currentAngle:Float, targetAngle:Float, t:Float):Float
+	private function updateAimLine():Void
     {
-        var difference = angleDifference(targetAngle, currentAngle);
-        return currentAngle + difference * t;
+		// Set the position and angle of the aim line
+		aimLine.x = x + width / 2;
+		aimLine.y = y + height / 2;
+		aimLine.angle = turretAngle * (180 / Math.PI); // Convert from radians to degrees
     }
 
-    private function angleDifference(a1:Float, a2:Float):Float
+	public function shoot():Void
     {
-        var diff = a1 - a2;
-        while (diff < -Math.PI) diff += Math.PI * 2;
-        while (diff > Math.PI) diff -= Math.PI * 2;
-        return diff;
+		// Calculate the velocity based on the turret's current angle
+		var speed:Float = 400; // Set projectile speed
+		var velocity:FlxPoint = new FlxPoint(Math.cos(turretAngle) * speed, Math.sin(turretAngle) * speed);
+
+		// Create and fire the projectile
+		var projectile = new Projectile(x + width / 2, y + height / 2, velocity);
+		projectiles.add(projectile);
     }
 
-    public function shoot(target:FlxPoint):Void
+	public function disableCannon(duration:Float):Void
     {
-        var projectile = new Projectile(x + width / 2, y + height / 2, target);
-        projectiles.add(projectile); // Add the projectile to the projectiles group
+		cannonDisabled = true;
+		disableTimer.start(duration, reenableCannon, 1);
+	}
+
+	private function reenableCannon(timer:FlxTimer):Void
+	{
+		cannonDisabled = false;
     }
 }
