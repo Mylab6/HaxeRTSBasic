@@ -25,9 +25,10 @@ class Spawner extends FlxSprite
         innerBox.makeGraphic(150, 150, color);
         
         // Copy the inner box onto the current spawner graphic
-        this.pixels.copyPixels(innerBox.pixels, new Rectangle(0, 0, 150, 150), new Point(5, 5));
+		this.pixels.copyPixels(innerBox.pixels, new Rectangle(0, 0, 150, 150), new Point(5, 5));
         
         // Mark the graphic as dirty to update it
         this.dirty = true;
+		innerBox.color = color; 
     }
 }

@@ -70,11 +70,18 @@ class PlayState extends FlxState
 		add(bigBox);
 		add(bigBox.aimLine);
 
-		// Create and add the spawners with outlines using the Spawner class
-		redSpawner = createSpawnerWithOutline(FlxG.width * 0.2, FlxG.height * 0.5, FlxColor.RED);
-		blueSpawner = createSpawnerWithOutline(FlxG.width * 0.5, FlxG.height * 0.2, FlxColor.BLUE);
-		greenSpawner = createSpawnerWithOutline(FlxG.width * 0.8, FlxG.height * 0.5, FlxColor.ORANGE);
+		var spawnerWidth = 160; // The width of each spawner including the outline
+		var totalWidth = spawnerWidth * 3;
+		var spacing = (FlxG.width - totalWidth) / 4; // Calculate the spacing between the spawners
 
+		var yPosition = FlxG.height - spawnerWidth - 10; // Positioning 10 pixels above the bottom
+
+		// Create and position the spawners
+		redSpawner = createSpawnerWithOutline(spacing, yPosition, FlxColor.RED);
+		greenSpawner = createSpawnerWithOutline(spacing * 2 + spawnerWidth, yPosition, FlxColor.GREEN);
+		blueSpawner = createSpawnerWithOutline(spacing * 3 + spawnerWidth * 2, yPosition, FlxColor.BLUE);
+
+	
 		add(redSpawner);
 		add(blueSpawner);
 		add(greenSpawner);
