@@ -3,15 +3,19 @@ package states;
 import entities.BigBox;
 import entities.BlueBox;
 import entities.GreenBox;
-import entities.Projectile;
 import entities.RedBox;
+import entities.Spawner;
 import filters.Scanline;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
+import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import managers.EnemyBehaviorManager;
+import managers.SpawnManager;
+import managers.SpawnerInfo; // Import SpawnerInfo type
 import openfl.filters.BitmapFilter;
 import openfl.filters.ShaderFilter;
 #if shaders_supported
@@ -21,6 +25,7 @@ import openfl.display.Shader;
 import openfl.utils.Assets;
 #end
 
+
 class PlayState extends FlxState
 {
     private var redBoxes:FlxGroup;
@@ -28,10 +33,12 @@ class PlayState extends FlxState
     private var greenBoxes:FlxGroup;
     private var projectiles:FlxGroup;
     private var bigBox:BigBox;
+	private var redSpawner:Spawner;
+	private var blueSpawner:Spawner;
+	private var greenSpawner:Spawner;
 
-	private var redBoxTimer:FlxTimer;
-	private var blueBoxTimer:FlxTimer;
-	private var greenBoxTimer:FlxTimer;
+	private var spawnManager:SpawnManager;
+	private var behaviorManager:EnemyBehaviorManager;
 
     override public function create():Void
     {
@@ -41,7 +48,8 @@ class PlayState extends FlxState
         redBoxes = new FlxGroup();
         blueBoxes = new FlxGroup();
         greenBoxes = new FlxGroup();
-        projectiles = new FlxGroup(); // Create the projectiles group
+		projectiles = new FlxGroup();
+
 		// Apply the scanline filter if supported
 		var filters:Array<BitmapFilter> = [];
 		#if shaders_supported
@@ -61,91 +69,52 @@ class PlayState extends FlxState
 		bigBox = new BigBox(FlxG.width / 2 - 50, FlxG.height / 2 - 50, projectiles);
 		add(bigBox);
 		add(bigBox.aimLine);
+
+		// Create and add the spawners with outlines using the Spawner class
+		redSpawner = createSpawnerWithOutline(FlxG.width * 0.2, FlxG.height * 0.5, FlxColor.RED);
+		blueSpawner = createSpawnerWithOutline(FlxG.width * 0.5, FlxG.height * 0.2, FlxColor.BLUE);
+		greenSpawner = createSpawnerWithOutline(FlxG.width * 0.8, FlxG.height * 0.5, FlxColor.ORANGE);
+
+		add(redSpawner);
+		add(blueSpawner);
+		add(greenSpawner);
+
+		// Create SpawnerInfo array
+		var spawners:Array<SpawnerInfo> = [
+			{spawner: redSpawner, enemyGroup: redBoxes},
+			{spawner: blueSpawner, enemyGroup: blueBoxes},
+			{spawner: greenSpawner, enemyGroup: greenBoxes}
+		];
+
+		// Initialize managers with the spawners
+		spawnManager = new SpawnManager(spawners);
+		behaviorManager = new EnemyBehaviorManager(redBoxes, blueBoxes, greenBoxes, bigBox);
+
 		// Start spawning enemies
-		redBoxTimer = new FlxTimer();
-		redBoxTimer.start(2, spawnRedBox, 0); // Spawn a red box every 2 seconds
+		spawnManager.startSpawning();
+	}
 
-		blueBoxTimer = new FlxTimer();
-		blueBoxTimer.start(3, spawnBlueBox, 0); // Spawn a blue box every 3 seconds
+	private function createSpawnerWithOutline(x:Float, y:Float, color:Int):Spawner
+	{
+		// Create the spawner with an outline
+		var spawner = new Spawner(x, y, color);
 
-		greenBoxTimer = new FlxTimer();
-		greenBoxTimer.start(4, spawnGreenBox, 0); // Spawn a green box every 4 seconds
+		// Add it to the state
+		return spawner;
     }
 
-    override public function update(elapsed:Float):Void
-    {
-        super.update(elapsed);
+	override public function update(elapsed:Float):Void
+	{
+		super.update(elapsed);
 
-        // Find the nearest box to the BigBox
-        var nearestBox:FlxSprite = null;
-		var minDistance:Float = Math.POSITIVE_INFINITY;
-
-        var allBoxes:Array<FlxSprite> = [];
-        allBoxes = allBoxes.concat(cast redBoxes.members);
-        allBoxes = allBoxes.concat(cast blueBoxes.members);
-        allBoxes = allBoxes.concat(cast greenBoxes.members);
-
-        for (box in allBoxes)
+		// Update nearest target and aim
+		var nearestBox:FlxSprite = behaviorManager.findNearestBox(bigBox);
+		if (nearestBox != null)
 		{
-			if (box != null && box.exists && box.alive)
-            {
-                var boxPoint = new FlxPoint(box.x + box.width / 2, box.y + box.height / 2);
-                var bigBoxPoint = new FlxPoint(bigBox.x + bigBox.width / 2, bigBox.y + bigBox.height / 2);
-				var distance = bigBoxPoint.distanceTo(boxPoint);
-
-                if (distance < minDistance)
-                {
-                    minDistance = distance;
-					nearestBox = box;
-                }
-            }
-		}
-
-        // If a box is found, update the turret to aim and shoot
-        if (nearestBox != null)
-        {
 			bigBox.updateTurret(elapsed, new FlxPoint(nearestBox.x + nearestBox.width / 2, nearestBox.y + nearestBox.height / 2));
 		}
 
-        // Update behaviors for all boxes
-        for (redBox in redBoxes.members)
-        {
-            var box = cast(redBox, RedBox);
-            box.updateBehavior(bigBox);
-        }
-        for (blueBox in blueBoxes.members)
-        {
-            var box = cast(blueBox, BlueBox);
-            box.updateBehavior(bigBox);
-        }
-        for (greenBox in greenBoxes.members)
-        {
-            var box = cast(greenBox, GreenBox);
-            box.updateBehavior(bigBox);
-        }
-    }
-
-	private function spawnRedBox(timer:FlxTimer):Void
-	{
-		var x = FlxG.random.float(0, FlxG.width - 50);
-		var y = FlxG.random.float(0, FlxG.height - 50);
-		var redBox = new RedBox(x, y);
-		redBoxes.add(redBox);
-	}
-
-	private function spawnBlueBox(timer:FlxTimer):Void
-	{
-		var x = FlxG.random.float(0, FlxG.width - 50);
-		var y = FlxG.random.float(0, FlxG.height - 50);
-		var blueBox = new BlueBox(x, y);
-		blueBoxes.add(blueBox);
-	}
-
-	private function spawnGreenBox(timer:FlxTimer):Void
-	{
-		var x = FlxG.random.float(0, FlxG.width - 50);
-		var y = FlxG.random.float(0, FlxG.height - 50);
-		var greenBox = new GreenBox(x, y);
-		greenBoxes.add(greenBox);
+		// Update enemy behaviors
+		behaviorManager.updateBehaviors(elapsed);
 	}
 }
