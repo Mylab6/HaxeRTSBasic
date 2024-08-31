@@ -9,7 +9,7 @@ class RedBox extends FlxSprite
     public function new(x:Float, y:Float)
     {
         super(x, y);
-        makeGraphic(10, 10, FlxColor.RED);
+		makeGraphic(100, 100, FlxColor.RED);
     }
 
     public function updateBehavior(bigBox:BigBox):Void

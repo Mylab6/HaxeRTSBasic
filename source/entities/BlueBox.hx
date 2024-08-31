@@ -9,7 +9,7 @@ class BlueBox extends FlxSprite
     public function new(x:Float, y:Float)
     {
         super(x, y);
-        makeGraphic(10, 10, FlxColor.BLUE);
+		makeGraphic(100, 100, FlxColor.BLUE);
     }
 
     public function updateBehavior(bigBox:BigBox):Void

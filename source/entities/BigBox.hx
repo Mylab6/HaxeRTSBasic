@@ -15,7 +15,7 @@ class BigBox extends FlxSprite
     public function new(x:Float, y:Float, projectiles:FlxGroup)
     {
         super(x, y);
-        makeGraphic(100, 100, FlxColor.BLUE);
+		makeGraphic(300, 300, FlxColor.PURPLE);
         turretAngle = 0;
         fireRate = 2.0; // Turret fires every 2 seconds
         timeSinceLastShot = 0;
