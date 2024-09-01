@@ -30,6 +30,7 @@ jobs:
           haxelib install openfl 9.3.4
           haxelib install flixel-addons 3.2.3 
           haxelib run lime setup flixel
+          haxelib run ime setup android
 
           haxelib run lime build android -final
 
@@ -42,6 +43,7 @@ jobs:
           haxelib install openfl 9.3.4
           haxelib install flixel-addons 3.2.3 
           haxelib run lime setup flixel
+          haxelib run lime setup html5
 
           haxelib run lime build html5 -final
 
