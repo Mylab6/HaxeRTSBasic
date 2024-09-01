@@ -20,23 +20,7 @@ class GreenBox extends BaseBox
 
     public function updateBehavior(bigBox:BigBox):Void
     {
-		var boxPoint:FlxPoint = new FlxPoint(x, y);
-		var bigBoxPoint:FlxPoint = new FlxPoint(bigBox.x, bigBox.y);
-		var distance:Float = boxPoint.distanceTo(bigBoxPoint);
-
-		// If too close, move away from the BigBox
-		if (distance < 20) // Adjust to maintain 150 units distance
-		{
-			var direction:FlxPoint = new FlxPoint(x - bigBox.x, y - bigBox.y);
-			direction.normalize();
-			velocity.x = direction.x * 100; // Move at a speed of 100 units
-			velocity.y = direction.y * 100;
-		}
-		else
-		{
-			velocity.x = 0;
-			velocity.y = 0; // Stop moving if far enough
-		}
+		MoveTowards(bigBox, 20); 
 	}
 
 	private function onDartThrow(timer:FlxTimer):Void

@@ -12,14 +12,10 @@ class RedBox extends BaseBox
 	}
 
     public function updateBehavior(bigBox:BigBox):Void
-    {
-        var direction:FlxPoint = FlxPoint.get(bigBox.x - x, bigBox.y - y).normalize();
-        velocity.set(direction.x * 100, direction.y * 100);
-
-        if (overlaps(bigBox))
-        {
-           // bigBox.takeDamage(10);
-            kill();
-        }
-    }
+	{
+		var boxPoint:FlxPoint = new FlxPoint(x, y);
+		var bigBoxPoint:FlxPoint = new FlxPoint(bigBox.x, bigBox.y);
+		var distance:Float = boxPoint.distanceTo(bigBoxPoint);
+		MoveTowards(bigBox, distance);
+	}
 }

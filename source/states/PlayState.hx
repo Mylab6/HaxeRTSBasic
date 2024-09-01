@@ -1,5 +1,6 @@
 package states;
 
+import entities.BaseBox;
 import entities.BigBox;
 import entities.BlueBox;
 import entities.GreenBox;
@@ -130,5 +131,17 @@ class PlayState extends FlxState
 
 		// Update enemy behaviors
 		behaviorManager.updateBehaviors(elapsed);
+		FlxG.overlap(redBoxes, projectiles, onProjectileHitBox);
+		FlxG.overlap(blueBoxes, projectiles, onProjectileHitBox);
+		FlxG.overlap(greenBoxes, projectiles, onProjectileHitBox);
+	}
+
+	private function onProjectileHitBox(box:FlxSprite, projectile:FlxSprite):Void
+	{
+		// Cast to BaseBox to access the hit method
+		var baseBox = cast(box, BaseBox);
+		baseBox.hit(); // Trigger the hit effect and kill the box
+
+		projectile.kill(); // Destroy the projectile on impact
 	}
 }

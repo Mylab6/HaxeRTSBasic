@@ -1,46 +1,30 @@
 package entities;
 
-import flixel.FlxSprite;
-import openfl.display.Graphics;
-import openfl.display.Shape;
+import flixel.addons.display.shapes.FlxShapeSquareDonut;
+import flixel.util.FlxColor;
+import flixel.util.FlxSpriteUtil.LineStyle;
 
-class OutlinedBox extends FlxSprite
+class OutlinedBox extends FlxShapeSquareDonut
 {
     public function new(x:Float, y:Float, outerColor:Int)
     {
-        super(x, y);
-        
-        // Set the size of the main box
-        var boxSize:Int = 100;
-        var outlineThickness:Int = 5;
-        var centerBoxSize:Int = 40;
+		// Define the sizes for the outer and inner boxes
+		var outerSize:Int = 100;
+		var innerSize:Int = 60; // This will create the central white box
 
-        // Create a Shape to draw the box using Graphics API
-        var shape:Shape = new Shape();
-        var g:Graphics = shape.graphics;
+		// Define the line style for the outer border (white color with thickness)
+		var lineStyle:LineStyle = {
+			thickness: 5, // 5px thick outline
+			color: FlxColor.WHITE, // White color
+			// Line joint style
+			miterLimit: 3, // Miter limit
+			pixelHinting: true // Pixel hinting
+		};
+		// Call the super constructor with the desired parameters
+		super(outerSize, innerSize, 20, 20, lineStyle, outerColor);
 
-        // Draw the white outline
-        g.beginFill(0xFFFFFF);
-        g.drawRect(0, 0, boxSize + outlineThickness * 2, boxSize + outlineThickness * 2);
-        g.endFill();
-
-        // Draw the inner colored box
-        g.beginFill(outerColor);
-        g.drawRect(outlineThickness, outlineThickness, boxSize, boxSize);
-        g.endFill();
-
-        // Draw the center white box
-        g.beginFill(0xFFFFFF);
-        g.drawRect(
-            (boxSize + outlineThickness * 2 - centerBoxSize) / 2,
-            (boxSize + outlineThickness * 2 - centerBoxSize) / 2,
-            centerBoxSize,
-            centerBoxSize
-        );
-        g.endFill();
-
-        // Convert the Shape to BitmapData and apply it to the FlxSprite
-        pixels.draw(shape);
-        this.dirty = true;
+		// Set the position
+		this.x = x;
+		this.y = y;
     }
 }
