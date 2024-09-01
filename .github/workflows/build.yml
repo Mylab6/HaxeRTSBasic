@@ -16,35 +16,36 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Haxe and Install Dependencies
-        uses: krdlab/setup-haxe@v1
-        with:
-          haxe-version: "4.2.5"
-      
-      - name: Install Libraries and Build for Android
+      - name: Set up Haxe, Install Android SDK, NDK, JDK, and Build
         run: |
+          # Install OpenJDK
+          sudo apt-get update
+          sudo apt-get install -y openjdk-11-jdk wget unzip
+          
+          # Download and install Android SDK command-line tools
+          wget https://dl.google.com/android/repository/commandlinetools-linux-8092744_latest.zip
+          mkdir -p android-sdk/cmdline-tools
+          unzip commandlinetools-linux-8092744_latest.zip -d android-sdk/cmdline-tools
+          
+          # Set environment variables
+          export ANDROID_SDK_ROOT=$PWD/android-sdk
+          export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/bin:$ANDROID_SDK_ROOT/platform-tools
+          
+          # Install required Android SDK components
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3" "ndk-bundle"
+          
+          # Set up Haxe
           haxelib install lime
           haxelib install hxcpp
           haxelib install flxsvg 1.0.2
           haxelib install flixel 5.8.0 
           haxelib install openfl 9.3.4
-          haxelib install flixel-addons 3.2.3 
-          haxelib run lime setup flixel
-          haxelib run lime setup android
-
+          
+          # Build for Android
           haxelib run lime build android -final
-
-      - name: Install Libraries and Build for HTML5
-        run: |
-          haxelib install lime
-          haxelib install hxcpp
-          haxelib install flxsvg 1.0.2
-          haxelib install flixel 5.8.0 
-          haxelib install openfl 9.3.4
-          haxelib install flixel-addons 3.2.3 
-          haxelib run lime setup flixel
-          haxelib run lime setup html5
-
+          
+          # Build for HTML5
           haxelib run lime build html5 -final
 
       - name: Upload Android Build
