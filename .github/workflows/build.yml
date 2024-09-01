@@ -25,11 +25,8 @@ jobs:
             hxcpp
             flxsvg:1.0.2
 
-      - name: Install Android SDK
-        run: haxelib install hxjava
-
       - name: Build Android
-        run: lime build android -final
+        run: haxelib run lime build android -final
 
   build-html5:
     name: Build for HTML5
@@ -47,7 +44,7 @@ jobs:
             flxsvg:1.0.2
 
       - name: Build HTML5
-        run: lime build html5 -final
+        run: haxelib run lime build html5 -final
 
   artifact-android:
     name: Upload Android Build
