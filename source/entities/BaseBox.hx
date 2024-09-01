@@ -6,14 +6,14 @@ import flixel.effects.particles.FlxEmitter;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 
-class BaseBox extends OutlinedBox
+class BaseBox extends SVGBox
 {
 	public var emitter:FlxEmitter;
 	public var distanceToTarget:Float;
 	public var movementSpeed:Float = 100; 
     public function new(x:Float, y:Float, color:Int)
     {
-		super(x, y, 100, color);
+		super(x, y, 45, color, "assets/images/svgs/box.svg");
         //makeGraphic(50, 50, color);
 
         // Create a particle emitter
