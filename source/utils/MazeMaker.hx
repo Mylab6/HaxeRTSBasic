@@ -24,42 +24,33 @@ class MazeMaker
         this.bottomOffset = bottomOffset;
 
         mazeWalls = new FlxGroup();
-        createMazeWalls();
+		createBarriers();
     }
 
-    private function createMazeWalls():Void
+	private function createBarriers():Void
     {
-        // Create the outer walls, leaving the top and bottom ends open
-        for (i in 0...gridWidth)
-        {
-            // Skip creating walls at the start (top) and end (bottom)
-            if (i == gridWidth / 2) continue;
+		// Define the number of barriers and the spacing between them
+		var numberOfBarriers:Int = 3; // You can change this to have more or fewer barriers
+		var spacing:Int = Std.int(gridHeight / (numberOfBarriers + 1));
 
-            createWall(i * tileSize, topOffset); // Top wall
-            createWall(i * tileSize, topOffset + gridHeight * tileSize); // Bottom wall
-        }
-        for (j in 0...gridHeight)
+		for (i in 1...numberOfBarriers + 1)
         {
-            createWall(0, topOffset + j * tileSize); // Left wall
-            createWall((gridWidth - 1) * tileSize, topOffset + j * tileSize); // Right wall
-        }
+			createHorizontalBarrier(spacing * i);
+		}
+	}
 
-        // Generate the inner maze structure
-        for (i in 1...(gridWidth - 1))
-        {
-            for (j in 1...(gridHeight - 1))
-            {
-                if (FlxG.random.float(0, 1) < 0.3) // Randomly place walls
-                {
-                    createWall(i * tileSize, topOffset + j * tileSize);
-                }
-            }
+	private function createHorizontalBarrier(row:Int):Void
+	{
+		// Create a horizontal barrier across the screen
+		for (i in 1...(gridWidth - 1)) // Leave a gap at the sides
+		{
+			createWall(i * tileSize, topOffset + row * tileSize);
         }
     }
 
     private function createWall(x:Float, y:Float):Void
     {
-        var wall = new FlxSprite(x, y).makeGraphic(tileSize, tileSize, FlxColor.GRAY);
+		var wall = new FlxSprite(x, y).makeGraphic(tileSize * 3, tileSize, FlxColor.GRAY);
         mazeWalls.add(wall);
     }
 
