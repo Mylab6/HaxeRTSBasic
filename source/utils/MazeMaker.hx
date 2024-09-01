@@ -14,7 +14,7 @@ class MazeMaker
 	private var gridHeight:Int;
 	private var numberOfBarriers:Int;
 
-	public function new(tileSize:Int = 24, numberOfBarriers:Int = 8)
+	public function new(tileSize:Int = 32, numberOfBarriers:Int = 5)
     {
         this.tileSize = tileSize;
 		this.gridWidth = Math.ceil(FlxG.width / tileSize);

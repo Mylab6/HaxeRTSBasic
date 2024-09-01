@@ -31,8 +31,8 @@ jobs:
           # Download and install Android SDK command-line tools
           wget https://dl.google.com/android/repository/commandlinetools-linux-8092744_latest.zip -O commandlinetools.zip > /dev/null
           mkdir -p android-sdk/cmdline-tools
-          unzip commandlinetools.zip -d android-sdk/cmdline-tools
-          mv android-sdk/cmdline-tools/cmdline-tools android-sdk/cmdline-tools/latest
+          unzip commandlinetools.zip -d android-sdk/cmdline-tools > /dev/null
+          mv android-sdk/cmdline-tools/cmdline-tools android-sdk/cmdline-tools/latest > /dev/null
           
           # Set environment variables
           export ANDROID_SDK_ROOT=$PWD/android-sdk
@@ -48,10 +48,10 @@ jobs:
           haxelib install flxsvg 1.0.2
           haxelib install flixel 5.8.0 
           haxelib install openfl 9.3.4
-          haxelib run lime setup flixel
-          haxelib run lime setup
-          haxelib run lime setup android
-          haxelib run lime setup html5
+          yes | haxelib run lime setup flixel
+          yes | haxelib run lime setup
+          yes | haxelib run lime setup android
+          yes | haxelib run lime setup html5
 
           # Build for Android
           haxelib run lime build android 
