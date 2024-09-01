@@ -15,11 +15,11 @@ class BlueBox extends BaseBox
 	public function updateBehavior(bigBox:EnemyBox):Void
 	{
 
-		MoveTowards(bigBox, 10); 
+		MoveTowards(bigBox, -10, true); 
 		// If close enough, disable the cannon
 		if (distanceToTarget < 20)
 		{
-			bigBox.disableCannon(3); // Disable the cannon for 3 seconds
+			bigBox.disableCannon(1); // Disable the cannon for 3 seconds
 			kill(); // Remove the BlueBox after it disables the cannon
 		}
     }

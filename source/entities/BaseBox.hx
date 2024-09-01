@@ -28,7 +28,7 @@ class BaseBox extends SVGBox
 		emitter.makeParticles(5, 5, color, 50); // Create particles matching the box color
     }
 
-	public function MoveTowards(bigBox:EnemyBox, minDistance:Float = -10):Void
+	public function MoveTowards(bigBox:EnemyBox, minDistance:Float, CanRam:Bool):Void
 	{
 		if (recoveringFromKickback)
 			return;
@@ -50,7 +50,11 @@ class BaseBox extends SVGBox
 
 		if (overlaps(bigBox))
 		{
-			bigBox.TakeDamage(Damage);
+			if (CanRam == true)
+			{
+				bigBox.TakeDamage(Damage);
+			}
+			
 			kill();
 		}
 	}

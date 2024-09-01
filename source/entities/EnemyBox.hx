@@ -9,8 +9,7 @@ import flixel.util.FlxTimer;
 
 class EnemyBox extends SVGBox
 {
-	public  var HP:Int = 100; 
-
+	public var HP:Int = 100;
     public var turretAngle:Float;
     public var fireRate:Float;
     private var timeSinceLastShot:Float;
@@ -22,6 +21,8 @@ class EnemyBox extends SVGBox
 
 	private var direction:Float; // Direction of movement (1 = right, -1 = left)
 	private var speed:Float; // Speed of movement
+	private var canTakeDamage:Bool = true; // Indicates whether the box can take damage
+	private var damageCooldown:FlxTimer;
 
     public function new(x:Float, y:Float, projectiles:FlxGroup)
     {
@@ -37,9 +38,12 @@ class EnemyBox extends SVGBox
 		aimLine = new FlxSprite();
 		aimLine.makeGraphic(100, 20, FlxColor.RED); // Thin red line
 		aimLine.origin.set(0, 1); // Set the origin at the start of the line
+
 		// Initialize movement
 		this.direction = 1; // Start moving right
 		this.speed = 140; // Speed of movement in pixels per second
+		// Initialize the damage cooldown timer
+		damageCooldown = new FlxTimer();
 	}
 
 	override public function update(elapsed:Float):Void
@@ -49,8 +53,26 @@ class EnemyBox extends SVGBox
 		// Move the BigBox from side to side
 		moveSideToSide(elapsed);
     }
-	public  function  TakeDamage( damage:Int) {
-		HP = HP - damage ; 
+	public function TakeDamage(damage:Int):Void
+	{
+		if (!canTakeDamage)
+			return; // If still in cooldown, ignore the damage
+
+		// Set the box to temporarily not be able to take damage
+		canTakeDamage = false;
+		damageCooldown.start(0.2, enableDamage);
+
+		// Apply damage to HP
+		HP -= damage;
+		if (HP <= 0)
+		{
+			kill();
+		}
+	}
+
+	private function enableDamage(timer:FlxTimer):Void
+	{
+		canTakeDamage = true; // Re-enable damage after the cooldown period
 	}
 
     public function updateTurret(elapsed:Float, target:FlxPoint):Void

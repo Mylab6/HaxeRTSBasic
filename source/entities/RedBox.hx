@@ -16,6 +16,6 @@ class RedBox extends BaseBox
 		var boxPoint:FlxPoint = new FlxPoint(x, y);
 		var bigBoxPoint:FlxPoint = new FlxPoint(bigBox.x, bigBox.y);
 		var distance:Float = boxPoint.distanceTo(bigBoxPoint);
-		MoveTowards(bigBox, distance);
+		MoveTowards(bigBox, -10, true);
 	}
 }
