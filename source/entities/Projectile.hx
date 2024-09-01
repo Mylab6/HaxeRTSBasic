@@ -5,12 +5,17 @@ import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 
-class Projectile extends FlxSprite
+class Projectile extends SVGBox
 {
-	public function new(x:Float, y:Float, velocity:FlxPoint, color:FlxColor, size:Int)
+	public var Damaga:Int = 10;
+	public var EnemyProjectile:Bool;
+
+	public function new(x:Float, y:Float, velocity:FlxPoint, color:FlxColor, size:Int, enemyProjectile:Bool)
     {
-        super(x, y);
-		makeGraphic(size, size, color); // Example size and color
+		// super(x, y);
+		// makeGraphic(size, size, color); // Example size and color
+		super(x, y, size, color, null);
+		EnemyProjectile = enemyProjectile;
 		this.velocity = velocity; // Set the projectile's velocity
     }
 

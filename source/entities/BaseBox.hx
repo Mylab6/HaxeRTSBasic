@@ -9,18 +9,19 @@ import flixel.util.FlxColor;
 class BaseBox extends SVGBox
 {
 	public var emitter:FlxEmitter;
+	public var Damage:Int = 10; 
 	public var distanceToTarget:Float;
 	public var movementSpeed:Float = 100; 
     public function new(x:Float, y:Float, color:Int)
     {
-		super(x, y, 45, color, "assets/images/svgs/box.svg");
+		super(x, y, 45, color, null);
         //makeGraphic(50, 50, color);
 
         // Create a particle emitter
         emitter = new FlxEmitter(x + width / 2, y + height / 2, 50);
-        emitter.makeParticles( 2, 2, color, 50 ); // Create particles matching the box color
+		emitter.makeParticles(5, 5, color, 50); // Create particles matching the box color
     }
-	public function MoveTowards(bigBox:BigBox, minDistance:Float = -10):Void
+	public function MoveTowards(bigBox:EnemyBox, minDistance:Float = -10):Void
 	{
 
 		var boxPoint:FlxPoint = new FlxPoint(x, y);
@@ -40,7 +41,7 @@ class BaseBox extends SVGBox
 
 		if (overlaps(bigBox))
 		{
-			// bigBox.takeDamage(10);
+			bigBox.TakeDamage(Damage); 
 			kill();
 		}
 	}

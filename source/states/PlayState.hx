@@ -1,9 +1,10 @@
 package states;
 
 import entities.BaseBox;
-import entities.BigBox;
 import entities.BlueBox;
+import entities.EnemyBox;
 import entities.GreenBox;
+import entities.Projectile;
 import entities.RedBox;
 import entities.Spawner;
 import filters.Scanline;
@@ -33,7 +34,7 @@ class PlayState extends FlxState
     private var blueBoxes:FlxGroup;
     private var greenBoxes:FlxGroup;
     private var projectiles:FlxGroup;
-    private var bigBox:BigBox;
+	private var enemyBox:EnemyBox;
 	private var redSpawner:Spawner;
 	private var blueSpawner:Spawner;
 	private var greenSpawner:Spawner;
@@ -55,6 +56,7 @@ class PlayState extends FlxState
 		greenBoxEmitters = new FlxGroup();
 		redBoxEmitters = new FlxGroup();
 		blueBoxEmitters = new FlxGroup(); 
+		bgColor = FlxColor.fromString("#F0E68C"); 
 		// Apply the scanline filter if supported
 		var filters:Array<BitmapFilter> = [];
 		#if shaders_supported
@@ -68,9 +70,9 @@ class PlayState extends FlxState
 
 
 		// Initialize and add the BigBox
-		bigBox = new BigBox(FlxG.width / 2 - 50, 10, projectiles); // Positioned at the top
-		add(bigBox);
-		add(bigBox.aimLine);
+		enemyBox = new EnemyBox(FlxG.width / 2 - 50, 10, projectiles); // Positioned at the top
+		add(enemyBox);
+		add(enemyBox.aimLine);
 
 		var spawnerWidth = 160; // The width of each spawner including the outline
 		var totalWidth = spawnerWidth * 3;
@@ -104,7 +106,7 @@ class PlayState extends FlxState
 
 		// Initialize managers with the spawners
 		spawnManager = new SpawnManager(spawners);
-		behaviorManager = new EnemyBehaviorManager(redBoxes, blueBoxes, greenBoxes, bigBox);
+		behaviorManager = new EnemyBehaviorManager(redBoxes, blueBoxes, greenBoxes, enemyBox);
 
 		// Start spawning enemies
 		spawnManager.startSpawning();
@@ -124,10 +126,10 @@ class PlayState extends FlxState
 		super.update(elapsed);
 
 		// Update nearest target and aim
-		var nearestBox:FlxSprite = behaviorManager.findNearestBox(bigBox);
+		var nearestBox:FlxSprite = behaviorManager.findNearestBox(enemyBox);
 		if (nearestBox != null)
 		{
-			bigBox.updateTurret(elapsed, new FlxPoint(nearestBox.x + nearestBox.width / 2, nearestBox.y + nearestBox.height / 2));
+			enemyBox.updateTurret(elapsed, new FlxPoint(nearestBox.x + nearestBox.width / 2, nearestBox.y + nearestBox.height / 2));
 		}
 
 		// Update enemy behaviors
@@ -135,8 +137,19 @@ class PlayState extends FlxState
 		FlxG.overlap(redBoxes, projectiles, onProjectileHitBox);
 		FlxG.overlap(blueBoxes, projectiles, onProjectileHitBox);
 		FlxG.overlap(greenBoxes, projectiles, onProjectileHitBox);
+		FlxG.overlap(enemyBox, projectiles, onProjectileHitEnemy); 
 	}
 
+	private function onProjectileHitEnemy(box:FlxSprite, projectile:FlxSprite):Void
+	{
+		var projectileF = cast(projectile, Projectile); // Cast to BaseBox to access the hit method
+		if (projectileF.EnemyProjectile)
+		{
+			return;
+		}
+		enemyBox.TakeDamage(projectileF.Damaga);
+		projectile.kill(); // Destroy the projectile on impact
+	}
 	private function onProjectileHitBox(box:FlxSprite, projectile:FlxSprite):Void
 	{
 		// Cast to BaseBox to access the hit method

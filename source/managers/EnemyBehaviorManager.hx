@@ -1,7 +1,7 @@
 package managers;
 
-import entities.BigBox;
 import entities.BlueBox;
+import entities.EnemyBox;
 import entities.GreenBox;
 import entities.RedBox;
 import flixel.FlxSprite;
@@ -13,17 +13,17 @@ class EnemyBehaviorManager
     private var redBoxes:FlxGroup;
     private var blueBoxes:FlxGroup;
     private var greenBoxes:FlxGroup;
-    private var bigBox:BigBox;
+	private var enemyBox:EnemyBox;
 
-    public function new(redBoxes:FlxGroup, blueBoxes:FlxGroup, greenBoxes:FlxGroup, bigBox:BigBox)
+	public function new(redBoxes:FlxGroup, blueBoxes:FlxGroup, greenBoxes:FlxGroup, enemyBox:EnemyBox)
     {
         this.redBoxes = redBoxes;
         this.blueBoxes = blueBoxes;
         this.greenBoxes = greenBoxes;
-        this.bigBox = bigBox;
+		this.enemyBox = enemyBox;
     }
 
-    public function findNearestBox(bigBox:BigBox):FlxSprite
+	public function findNearestBox(enemyBox:EnemyBox):FlxSprite
     {
         var nearestBox:FlxSprite = null;
         var minDistance:Float = Math.POSITIVE_INFINITY;
@@ -38,7 +38,7 @@ class EnemyBehaviorManager
             if (box != null && box.exists && box.alive)
             {
                 var boxPoint = new FlxPoint(box.x + box.width / 2, box.y + box.height / 2);
-                var bigBoxPoint = new FlxPoint(bigBox.x + bigBox.width / 2, bigBox.y + bigBox.height / 2);
+				var bigBoxPoint = new FlxPoint(enemyBox.x + enemyBox.width / 2, enemyBox.y + enemyBox.height / 2);
                 var distance = bigBoxPoint.distanceTo(boxPoint);
 
                 if (distance < minDistance)
@@ -57,17 +57,17 @@ class EnemyBehaviorManager
         for (redBox in redBoxes.members)
         {
             var box = cast(redBox, RedBox);
-            box.updateBehavior(bigBox);
+			box.updateBehavior(enemyBox);
         }
         for (blueBox in blueBoxes.members)
         {
             var box = cast(blueBox, BlueBox);
-            box.updateBehavior(bigBox);
+			box.updateBehavior(enemyBox);
         }
         for (greenBox in greenBoxes.members)
         {
             var box = cast(greenBox, GreenBox);
-            box.updateBehavior(bigBox);
+			box.updateBehavior(enemyBox);
         }
     }
 }

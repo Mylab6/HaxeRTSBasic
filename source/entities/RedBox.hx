@@ -11,7 +11,7 @@ class RedBox extends BaseBox
 		super(x, y, FlxColor.RED);
 	}
 
-    public function updateBehavior(bigBox:BigBox):Void
+	public function updateBehavior(bigBox:EnemyBox):Void
 	{
 		var boxPoint:FlxPoint = new FlxPoint(x, y);
 		var bigBoxPoint:FlxPoint = new FlxPoint(bigBox.x, bigBox.y);

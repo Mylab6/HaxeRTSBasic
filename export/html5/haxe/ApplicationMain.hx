@@ -35,7 +35,7 @@ class ApplicationMain
 		ManifestResources.init(config);
 		#end
 
-		app.meta["build"] = "11";
+		app.meta["build"] = "12";
 		app.meta["company"] = "HaxeFlixel";
 		app.meta["file"] = "HaxeRtsBasic";
 		app.meta["name"] = "HaxeRtsBasic";
@@ -68,7 +68,7 @@ class ApplicationMain
 
 		attributes.context = {
 			antialiasing: 0,
-			background: 0,
+			background: 15787660,
 			colorDepth: 32,
 			depth: true,
 			hardware: true,
@@ -104,7 +104,7 @@ class ApplicationMain
 		#elseif air
 		app.window.title = "HaxeRtsBasic";
 		#else
-		app.window.context.attributes.background = 0;
+		app.window.context.attributes.background = 15787660;
 		app.window.frameRate = 60;
 		#end
 

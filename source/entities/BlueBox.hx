@@ -12,7 +12,7 @@ class BlueBox extends BaseBox
 		
     }
 
-    public function updateBehavior(bigBox:BigBox):Void
+	public function updateBehavior(bigBox:EnemyBox):Void
 	{
 
 		MoveTowards(bigBox, 10); 

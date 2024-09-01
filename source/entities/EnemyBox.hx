@@ -7,8 +7,10 @@ import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
-class BigBox extends FlxSprite
+class EnemyBox extends SVGBox
 {
+	public  var HP:Int = 100; 
+
     public var turretAngle:Float;
     public var fireRate:Float;
     private var timeSinceLastShot:Float;
@@ -23,9 +25,8 @@ class BigBox extends FlxSprite
 
     public function new(x:Float, y:Float, projectiles:FlxGroup)
     {
-        super(x, y);
-		makeGraphic(100, 100, FlxColor.BLUE);
-        turretAngle = 0;
+		super(x, y, 156, FlxColor.fromString("#FFA500"), null);
+
 		fireRate = 0.5; // Reduced for faster shooting
         timeSinceLastShot = 0;
 		this.projectiles = projectiles;
@@ -34,7 +35,7 @@ class BigBox extends FlxSprite
 
 		// Initialize the aim line
 		aimLine = new FlxSprite();
-		aimLine.makeGraphic(100, 2, FlxColor.RED); // Thin red line
+		aimLine.makeGraphic(100, 5, FlxColor.RED); // Thin red line
 		aimLine.origin.set(0, 1); // Set the origin at the start of the line
 		// Initialize movement
 		this.direction = 1; // Start moving right
@@ -48,6 +49,9 @@ class BigBox extends FlxSprite
 		// Move the BigBox from side to side
 		moveSideToSide(elapsed);
     }
+	public  function  TakeDamage( damage:Int) {
+		HP = HP - damage ; 
+	}
 
     public function updateTurret(elapsed:Float, target:FlxPoint):Void
     {
@@ -96,7 +100,7 @@ class BigBox extends FlxSprite
 		var velocity:FlxPoint = new FlxPoint(Math.cos(turretAngle) * speed, Math.sin(turretAngle) * speed);
 
 		// Create and fire the projectile
-		var projectile = new Projectile(x + width / 2, y + height / 2, velocity * 2, FlxColor.CYAN, 20);
+		var projectile = new Projectile(x + width / 2, y + height / 2, velocity * 2, FlxColor.fromString("#00008B"), 30, true);
 		projectiles.add(projectile);
     }
 
