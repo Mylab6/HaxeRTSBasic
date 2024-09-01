@@ -3,6 +3,7 @@ package managers;
 import entities.BlueBox;
 import entities.GreenBox;
 import entities.RedBox;
+import flixel.group.FlxGroup;
 import flixel.util.FlxTimer;
 
 class SpawnManager
@@ -11,11 +12,13 @@ class SpawnManager
     private var redBoxTimer:FlxTimer;
     private var blueBoxTimer:FlxTimer;
     private var greenBoxTimer:FlxTimer;
+	private var projectiles:FlxGroup;
 
-    public function new(spawners:Array<SpawnerInfo>)
+	public function new(spawners:Array<SpawnerInfo>, projectiles:FlxGroup)
+
     {
         this.spawners = spawners;
-
+		this.projectiles = projectiles; 
         redBoxTimer = new FlxTimer();
         blueBoxTimer = new FlxTimer();
         greenBoxTimer = new FlxTimer();
@@ -54,7 +57,7 @@ class SpawnManager
         var info = spawners[2]; // Assuming third spawner is for GreenBox
         var x = info.spawner.x + info.spawner.width / 2 - 25;
         var y = info.spawner.y + info.spawner.height / 2 - 25;
-        var greenBox = new GreenBox(x, y);
+		var greenBox = new GreenBox(x, y, projectiles);
         info.enemyGroup.add(greenBox);
 		info.enemyEmitterGroup.add(greenBox.emitter);
 

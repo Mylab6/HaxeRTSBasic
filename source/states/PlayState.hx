@@ -105,7 +105,7 @@ class PlayState extends FlxState
 		];
 
 		// Initialize managers with the spawners
-		spawnManager = new SpawnManager(spawners);
+		spawnManager = new SpawnManager(spawners, projectiles);
 		behaviorManager = new EnemyBehaviorManager(redBoxes, blueBoxes, greenBoxes, enemyBox);
 
 		// Start spawning enemies
