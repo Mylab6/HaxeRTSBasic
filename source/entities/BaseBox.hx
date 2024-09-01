@@ -61,5 +61,9 @@ class BaseBox extends OutlinedBox
         super.update(elapsed);
         // Update the emitter position in case the box moves
         emitter.setPosition(x + width / 2, y + height / 2);
+		if (x + width < 0 || x > FlxG.width || y + height < 0 || y > FlxG.height)
+		{
+			kill();
+		}
     }
 }

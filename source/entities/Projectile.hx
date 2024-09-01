@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
@@ -17,10 +18,10 @@ class Projectile extends FlxSprite
     {
         super.update(elapsed);
 
-        // Destroy the projectile if it goes off-screen
-		/*if (!onScreen())
-			{
-				kill();
-		}*/
+		// Check if the projectile is off the screen
+		if (x + width < 0 || x > FlxG.width || y + height < 0 || y > FlxG.height)
+		{
+			kill();
+		}
     }
 }
