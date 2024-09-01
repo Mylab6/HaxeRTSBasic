@@ -25,7 +25,7 @@ class GreenBox extends BaseBox
 
 	public function updateBehavior(bigBox:EnemyBox):Void
     {
-		MoveTowards(bigBox, 20, false); 
+		MoveTowards(bigBox, 300, false); 
 	}
 
 	private function onDartThrow(timer:FlxTimer):Void
