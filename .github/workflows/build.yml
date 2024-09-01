@@ -20,10 +20,12 @@ jobs:
         uses: krdlab/setup-haxe@v1
         with:
           haxe-version: "4.2.5"
-          install-libraries: |
-            lime
-            hxcpp
-            flxsvg:1.0.2
+
+      - name: Install Lime
+        run: haxelib install lime
+
+      - name: Install additional libraries
+        run: haxelib install flxsvg 1.0.2
 
       - name: Build Android
         run: haxelib run lime build android -final
@@ -39,9 +41,12 @@ jobs:
         uses: krdlab/setup-haxe@v1
         with:
           haxe-version: "4.2.5"
-          install-libraries: |
-            lime
-            flxsvg:1.0.2
+
+      - name: Install Lime
+        run: haxelib install lime
+
+      - name: Install additional libraries
+        run: haxelib install flxsvg 1.0.2
 
       - name: Build HTML5
         run: haxelib run lime build html5 -final

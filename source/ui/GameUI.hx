@@ -14,13 +14,12 @@ class GameUI
 	private var timerBackground:FlxSprite;
 	private var hpBackground:FlxSprite;
     private var countdownTimer:FlxTimer;
-    private var timeLeft:Int;
-    private var bossHP:Int;
+	private var timeLeft:Int;
 
-    public function new(time:Int, initialBossHP:Int)
+	public function new(time:Int)
     {
         timeLeft = time;
-        bossHP = initialBossHP;
+
 
         // Initialize the countdown timer
         countdownTimer = new FlxTimer();
@@ -41,7 +40,7 @@ class GameUI
 		timerText.setFormat(null, 24, 0xFFFFFF); // Set text color to white
 
         // Initialize the HP text
-        hpText = new FlxText(FlxG.width - 210, 10, 200, "Boss HP: " + bossHP);
+		hpText = new FlxText(FlxG.width - 210, 10, 200, "Boss HP: ");
 		hpText.setFormat(null, 24, 0xFFFFFF); // Set text color to white
     }
 
@@ -61,8 +60,8 @@ class GameUI
 
     public function updateBossHP(newHP:Int):Void
     {
-        bossHP = newHP;
-        hpText.text = "Boss HP: " + bossHP;
+		//  bossHP = newHP;
+		hpText.text = "Boss HP: " + newHP;
     }
 
     public function addToState(state:FlxState):Void

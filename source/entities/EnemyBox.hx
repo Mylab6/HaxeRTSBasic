@@ -100,7 +100,7 @@ class EnemyBox extends SVGBox
 		var velocity:FlxPoint = new FlxPoint(Math.cos(turretAngle) * speed, Math.sin(turretAngle) * speed);
 
 		// Create and fire the projectile
-		var projectile = new Projectile(x + width / 2, y + height / 2, velocity * 2, FlxColor.fromString("#00008B"), 30, true);
+		var projectile = new Projectile(x + width / 2, y + height / 2, velocity * 2, FlxColor.fromString("#FF8C00"), 30, true);
 		projectiles.add(projectile);
     }
 

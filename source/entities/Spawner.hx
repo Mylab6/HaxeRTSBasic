@@ -9,7 +9,7 @@ class Spawner extends SVGBox
 {
     public function new(x:Float, y:Float, color:Int)
     {
-		super(x, y, 110, color);
+		super(x, y, 176, color);
 
 
     }

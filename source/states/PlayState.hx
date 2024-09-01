@@ -113,7 +113,7 @@ class PlayState extends FlxState
 
 		// Start spawning enemies
 		spawnManager.startSpawning();
-		gameUI = new GameUI(30, 100);
+		gameUI = new GameUI(120);
 		gameUI.addToState(this);
 	}
 
