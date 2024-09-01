@@ -1,0 +1,40 @@
+package entities;
+
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.effects.particles.FlxEmitter;
+import flixel.util.FlxColor;
+
+class BaseBox extends OutlinedBox
+{
+     public  var emitter:FlxEmitter;
+
+    public function new(x:Float, y:Float, color:Int)
+    {
+        super(x, y, color);
+        //makeGraphic(50, 50, color);
+
+        // Create a particle emitter
+        emitter = new FlxEmitter(x + width / 2, y + height / 2, 50);
+        emitter.makeParticles( 2, 2, color, 50 ); // Create particles matching the box color
+    }
+
+    public function hit():Void
+    {
+        // Position the emitter at the box's position
+        emitter.setPosition(x + width / 2, y + height / 2);
+        
+        // Start the particle effect
+        emitter.start(true, 0.5, 10); // Play the particle effect
+
+        // Handle any other hit logic (e.g., reducing health, destroying the box, etc.)
+        kill(); // Example: destroy the box when hit
+    }
+
+    override public function update(elapsed:Float):Void
+    {
+        super.update(elapsed);
+        // Update the emitter position in case the box moves
+        emitter.setPosition(x + width / 2, y + height / 2);
+    }
+}

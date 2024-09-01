@@ -6,14 +6,14 @@ import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
-class GreenBox extends FlxSprite
+class GreenBox extends BaseBox
 {
 	private var dartTimer:FlxTimer;
 
     public function new(x:Float, y:Float)
     {
-        super(x, y);
-		makeGraphic(100, 100, FlxColor.GREEN);
+		super(x, y, FlxColor.GREEN);
+		// makeGraphic(100, 100, FlxColor.GREEN);
 		dartTimer = new FlxTimer();
 		dartTimer.start(1, onDartThrow, 0); // Throws a dart every 1 second
     }
@@ -25,7 +25,7 @@ class GreenBox extends FlxSprite
 		var distance:Float = boxPoint.distanceTo(bigBoxPoint);
 
 		// If too close, move away from the BigBox
-		if (distance < 150) // Adjust to maintain 150 units distance
+		if (distance < 20) // Adjust to maintain 150 units distance
 		{
 			var direction:FlxPoint = new FlxPoint(x - bigBox.x, y - bigBox.y);
 			direction.normalize();

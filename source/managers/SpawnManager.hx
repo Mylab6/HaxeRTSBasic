@@ -24,7 +24,7 @@ class SpawnManager
     public function startSpawning():Void
     {
         redBoxTimer.start(2, spawnRedBox, 0); // Spawn a red box every 2 seconds
-        blueBoxTimer.start(3, spawnBlueBox, 0); // Spawn a blue box every 3 seconds
+		// blueBoxTimer.start(3, spawnBlueBox, 0); // Spawn a blue box every 3 seconds
         greenBoxTimer.start(4, spawnGreenBox, 0); // Spawn a green box every 4 seconds
     }
 
@@ -35,6 +35,7 @@ class SpawnManager
         var y = info.spawner.y + info.spawner.height / 2 - 25;
         var redBox = new RedBox(x, y);
         info.enemyGroup.add(redBox);
+		info.enemyEmitterGroup.add(redBox.emitter); 
     }
 
     private function spawnBlueBox(timer:FlxTimer):Void
@@ -44,6 +45,8 @@ class SpawnManager
         var y = info.spawner.y + info.spawner.height / 2 - 25;
         var blueBox = new BlueBox(x, y);
         info.enemyGroup.add(blueBox);
+		info.enemyEmitterGroup.add(blueBox.emitter);
+
     }
 
     private function spawnGreenBox(timer:FlxTimer):Void
@@ -53,5 +56,7 @@ class SpawnManager
         var y = info.spawner.y + info.spawner.height / 2 - 25;
         var greenBox = new GreenBox(x, y);
         info.enemyGroup.add(greenBox);
+		info.enemyEmitterGroup.add(greenBox.emitter);
+
     }
 }

@@ -4,12 +4,12 @@ import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 
-class BlueBox extends FlxSprite
+class BlueBox extends BaseBox
 {
     public function new(x:Float, y:Float)
     {
-        super(x, y);
-		makeGraphic(100, 100, FlxColor.BLUE);
+		super(x, y, FlxColor.BLUE);
+		
     }
 
     public function updateBehavior(bigBox:BigBox):Void

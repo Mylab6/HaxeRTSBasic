@@ -36,7 +36,9 @@ class PlayState extends FlxState
 	private var redSpawner:Spawner;
 	private var blueSpawner:Spawner;
 	private var greenSpawner:Spawner;
-
+	private var redBoxEmitters:FlxGroup;
+	private var blueBoxEmitters:FlxGroup;
+	private var greenBoxEmitters:FlxGroup;
 	private var spawnManager:SpawnManager;
 	private var behaviorManager:EnemyBehaviorManager;
 
@@ -49,7 +51,9 @@ class PlayState extends FlxState
         blueBoxes = new FlxGroup();
         greenBoxes = new FlxGroup();
 		projectiles = new FlxGroup();
-
+		greenBoxEmitters = new FlxGroup();
+		redBoxEmitters = new FlxGroup();
+		blueBoxEmitters = new FlxGroup(); 
 		// Apply the scanline filter if supported
 		var filters:Array<BitmapFilter> = [];
 		#if shaders_supported
@@ -66,7 +70,7 @@ class PlayState extends FlxState
 		add(projectiles);
 
 		// Initialize and add the BigBox
-		bigBox = new BigBox(FlxG.width / 2 - 50, FlxG.height / 2 - 50, projectiles);
+		bigBox = new BigBox(FlxG.width / 2 - 50, 10, projectiles); // Positioned at the top
 		add(bigBox);
 		add(bigBox.aimLine);
 
@@ -85,12 +89,15 @@ class PlayState extends FlxState
 		add(redSpawner);
 		add(blueSpawner);
 		add(greenSpawner);
+		add(redBoxEmitters);
+		add(blueBoxEmitters);
+		add(greenBoxEmitters);
 
 		// Create SpawnerInfo array
 		var spawners:Array<SpawnerInfo> = [
-			{spawner: redSpawner, enemyGroup: redBoxes},
-			{spawner: blueSpawner, enemyGroup: blueBoxes},
-			{spawner: greenSpawner, enemyGroup: greenBoxes}
+			{spawner: redSpawner, enemyGroup: redBoxes, enemyEmitterGroup: redBoxEmitters},
+			{spawner: blueSpawner, enemyGroup: blueBoxes, enemyEmitterGroup: blueBoxEmitters},
+			{spawner: greenSpawner, enemyGroup: greenBoxes, enemyEmitterGroup: greenBoxEmitters}
 		];
 
 		// Initialize managers with the spawners

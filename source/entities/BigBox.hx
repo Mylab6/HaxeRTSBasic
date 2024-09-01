@@ -1,5 +1,6 @@
 package entities;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
@@ -17,6 +18,9 @@ class BigBox extends FlxSprite
 
 	public var aimLine:FlxSprite; // Aiming line
 
+	private var direction:Float; // Direction of movement (1 = right, -1 = left)
+	private var speed:Float; // Speed of movement
+
     public function new(x:Float, y:Float, projectiles:FlxGroup)
     {
         super(x, y);
@@ -32,6 +36,17 @@ class BigBox extends FlxSprite
 		aimLine = new FlxSprite();
 		aimLine.makeGraphic(100, 2, FlxColor.RED); // Thin red line
 		aimLine.origin.set(0, 1); // Set the origin at the start of the line
+		// Initialize movement
+		this.direction = 1; // Start moving right
+		this.speed = 100; // Speed of movement in pixels per second
+	}
+
+	override public function update(elapsed:Float):Void
+	{
+		super.update(elapsed);
+
+		// Move the BigBox from side to side
+		moveSideToSide(elapsed);
     }
 
     public function updateTurret(elapsed:Float, target:FlxPoint):Void
@@ -53,6 +68,18 @@ class BigBox extends FlxSprite
             timeSinceLastShot = 0;
         }
     }
+
+	private function moveSideToSide(elapsed:Float):Void
+	{
+		// Update the x position based on direction and speed
+		x += direction * speed * elapsed;
+
+		// If the BigBox reaches the edge of the screen, reverse direction
+		if (x <= 0 || x + width >= FlxG.width)
+		{
+			direction *= -1;
+		}
+	}
 
 	private function updateAimLine():Void
     {

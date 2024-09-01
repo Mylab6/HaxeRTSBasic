@@ -4,13 +4,12 @@ import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 
-class RedBox extends FlxSprite
+class RedBox extends BaseBox
 {
     public function new(x:Float, y:Float)
-    {
-        super(x, y);
-		makeGraphic(100, 100, FlxColor.RED);
-    }
+	{
+		super(x, y, FlxColor.RED);
+	}
 
     public function updateBehavior(bigBox:BigBox):Void
     {

@@ -29,6 +29,6 @@ class Spawner extends FlxSprite
         
         // Mark the graphic as dirty to update it
         this.dirty = true;
-		innerBox.color = color; 
+
     }
 }
