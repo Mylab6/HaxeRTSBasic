@@ -28,6 +28,7 @@ jobs:
           haxelib install flxsvg 1.0.2
           haxelib install flixel 5.8.0 
           haxelib install openfl 9.3.4
+          haxelib install flixel-addons 3.2.3 
           haxelib run lime build android -final
 
       - name: Install Libraries and Build for HTML5
@@ -37,6 +38,7 @@ jobs:
           haxelib install flxsvg 1.0.2
           haxelib install flixel 5.8.0 
           haxelib install openfl 9.3.4
+          haxelib install flixel-addons 3.2.3 
           haxelib run lime build html5 -final
 
       - name: Upload Android Build
