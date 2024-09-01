@@ -50,10 +50,10 @@ jobs:
           haxelib install openfl 9.3.4
           
           # Build for Android
-          haxelib run lime build android -final path/to/your/project.xml
+          haxelib run lime build android 
           
           # Build for HTML5
-          haxelib run lime build html5 -final path/to/your/project.xml
+          haxelib run lime build html5 
 
       - name: Upload Android Build
         uses: actions/upload-artifact@v2
