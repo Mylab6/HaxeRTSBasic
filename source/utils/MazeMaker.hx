@@ -11,46 +11,65 @@ class MazeMaker
 
     private var tileSize:Int;
     private var gridWidth:Int;
-    private var gridHeight:Int;
-    private var topOffset:Int;
-    private var bottomOffset:Int;
+	private var gridHeight:Int;
+	private var numberOfBarriers:Int;
 
-    public function new(gridWidth:Int, gridHeight:Int, topOffset:Int, bottomOffset:Int, tileSize:Int = 32)
+	public function new(tileSize:Int = 24, numberOfBarriers:Int = 8)
     {
         this.tileSize = tileSize;
-        this.gridWidth = gridWidth;
-        this.gridHeight = gridHeight;
-        this.topOffset = topOffset;
-        this.bottomOffset = bottomOffset;
+		this.gridWidth = Math.ceil(FlxG.width / tileSize);
+		this.gridHeight = Math.ceil(FlxG.height / tileSize);
+		this.numberOfBarriers = numberOfBarriers;
+		mazeWalls = new FlxGroup();
+		createBorderWalls();
+		createHorizontalBarriers();
+	}
 
-        mazeWalls = new FlxGroup();
-		createBarriers();
-    }
+	private function createBorderWalls():Void
+	{
+		// Top and Bottom Borders
+		for (i in 0...gridWidth)
+		{
+			createWall(i * tileSize, 0); // Top border
+			createWall(i * tileSize, (gridHeight - 1) * tileSize); // Bottom border
+		}
 
-	private function createBarriers():Void
-    {
-		// Define the number of barriers and the spacing between them
-		var numberOfBarriers:Int = 3; // You can change this to have more or fewer barriers
-		var spacing:Int = Std.int(gridHeight / (numberOfBarriers + 1));
-
-		for (i in 1...numberOfBarriers + 1)
-        {
-			createHorizontalBarrier(spacing * i);
+		// Left and Right Borders
+		for (j in 0...gridHeight)
+		{
+			createWall(0, j * tileSize); // Left border
+			createWall((gridWidth - 1) * tileSize, j * tileSize); // Right border
 		}
 	}
 
-	private function createHorizontalBarrier(row:Int):Void
+	private function createHorizontalBarriers():Void
+    {
+		// Define the number of barriers and the spacing between them
+		var spacing:Int = Math.ceil(gridHeight / (numberOfBarriers + 1));
+
+		for (i in 1...numberOfBarriers + 1)
+        {
+			var barrierLengthRatio = 0.7 + FlxG.random.float(0.15, 0.15); // Random length between 70% to 85%
+			createHorizontalBarrier(spacing * i, barrierLengthRatio);
+		}
+	}
+
+	private function createHorizontalBarrier(row:Int, lengthRatio:Float):Void
 	{
-		// Create a horizontal barrier across the screen
-		for (i in 1...(gridWidth - 1)) // Leave a gap at the sides
+		// Calculate the length of the barrier
+		var barrierLength:Int = Math.round(gridWidth * lengthRatio);
+		var startX:Int = FlxG.random.int(1, gridWidth - barrierLength - 1); // Ensure it doesn't touch the borders
+
+		// Create a horizontal barrier that spans the calculated length
+		for (i in startX...(startX + barrierLength))
 		{
-			createWall(i * tileSize, topOffset + row * tileSize);
+			createWall(i * tileSize, row * tileSize);
         }
     }
 
     private function createWall(x:Float, y:Float):Void
     {
-		var wall = new FlxSprite(x, y).makeGraphic(tileSize * 3, tileSize, FlxColor.GRAY);
+		var wall = new FlxSprite(x, y).makeGraphic(tileSize, tileSize, FlxColor.GRAY);
         mazeWalls.add(wall);
     }
 

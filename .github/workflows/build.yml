@@ -25,11 +25,11 @@ jobs:
         run: |
           # Install OpenJDK
           ls
-          sudo apt-get update
-          sudo apt-get install -y openjdk-11-jdk wget unzip
+          sudo apt-get update -q > /dev/null
+          sudo apt-get install -y openjdk-11-jdk wget unzip -q > /dev/null
           
           # Download and install Android SDK command-line tools
-          wget https://dl.google.com/android/repository/commandlinetools-linux-8092744_latest.zip -O commandlinetools.zip
+          wget https://dl.google.com/android/repository/commandlinetools-linux-8092744_latest.zip -O commandlinetools.zip > /dev/null
           mkdir -p android-sdk/cmdline-tools
           unzip commandlinetools.zip -d android-sdk/cmdline-tools
           mv android-sdk/cmdline-tools/cmdline-tools android-sdk/cmdline-tools/latest
@@ -39,8 +39,8 @@ jobs:
           export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools
           
           # Install required Android SDK components
-          yes | sdkmanager --licenses
-          yes | sdkmanager --install "platform-tools" "platforms;android-30" "build-tools;30.0.3" "ndk-bundle"
+          yes | sdkmanager --licenses > /dev/null
+          yes | sdkmanager --install "platform-tools" "platforms;android-30" "build-tools;30.0.3" "ndk-bundle" > /dev/null
           
           # Set up Haxe
           haxelib install lime

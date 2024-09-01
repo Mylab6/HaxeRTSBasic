@@ -80,16 +80,10 @@ class PlayState extends FlxState
 		add(enemyBox);
 		add(enemyBox.aimLine);
 
-		var gridWidth:Int = Std.int(FlxG.width / 32);
-		var gridHeight:Int = Std.int((FlxG.height - 300) / 32); // 300 accounts for top and bottom space
-		//	gridWidth = Std.int(gridWidth);
-		//		gridHeight = Std.int(gridHeight);
-		var topOffset:Int = 100; // Space reserved for the turret
-		var bottomOffset:Int = 200; // Space reserved for the spawners
-
-		// Create and add the maze
-		mazeMaker = new MazeMaker(gridWidth, gridHeight, topOffset, bottomOffset);
+		// Create and add the maze with horizontal barriers
+		mazeMaker = new MazeMaker(); // Adjust tile size if needed
 		mazeMaker.addToState(this);
+
 
 		// Position the spawners at the bottom
 		var spawnerWidth = 160; // Width of each spawner
