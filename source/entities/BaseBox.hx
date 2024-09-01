@@ -13,7 +13,7 @@ class BaseBox extends SVGBox
 	public var emitter:FlxEmitter;
 	public var Damage:Int = 10;
 	public var distanceToTarget:Float;
-	public var movementSpeed:Float = 100; 
+	public var movementSpeed:Float = 100;
 	public var HP:Int = 20;
 
 	private var kickbackVelocity:FlxPoint;
@@ -36,28 +36,27 @@ class BaseBox extends SVGBox
 		var boxPoint:FlxPoint = new FlxPoint(x, y);
 		var bigBoxPoint:FlxPoint = new FlxPoint(bigBox.x, bigBox.y);
 		distanceToTarget = boxPoint.distanceTo(bigBoxPoint);
-		var finalSpeed:Float = 0;
+		var finalSpeed:Float = movementSpeed;
+
 		if (distanceToTarget < minDistance)
 		{
-			finalSpeed = movementSpeed * -1;
-		}
-		else
-		{
-			finalSpeed = movementSpeed;
+			// If too close, move back by reversing the speed
+			finalSpeed = -movementSpeed;
 		}
 		var direction:FlxPoint = FlxPoint.get(bigBox.x - x, bigBox.y - y).normalize();
 		velocity.set(direction.x * finalSpeed, direction.y * finalSpeed);
 
 		if (overlaps(bigBox))
 		{
-			if (CanRam == true)
+			if (CanRam)
 			{
 				bigBox.TakeDamage(Damage);
 			}
-			
+
 			kill();
 		}
 	}
+
 	public function hit(damage:Int, sourceX:Float, sourceY:Float):Void
     {
         // Position the emitter at the box's position
@@ -67,7 +66,7 @@ class BaseBox extends SVGBox
         emitter.start(true, 0.5, 10); // Play the particle effect
 
 		// Apply damage to HP
-		HP = HP - damage;
+		HP -= damage;
 		if (HP <= 0)
 		{
 			kill();
@@ -110,6 +109,7 @@ class BaseBox extends SVGBox
 
         // Update the emitter position in case the box moves
         emitter.setPosition(x + width / 2, y + height / 2);
+
 		// Remove the box if it goes off-screen
 		if (x + width < 0 || x > FlxG.width || y + height < 0 || y > FlxG.height)
 		{

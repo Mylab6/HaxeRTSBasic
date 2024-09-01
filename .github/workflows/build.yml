@@ -13,8 +13,9 @@ jobs:
     name: Build Project
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: 4.3.4
 
       - name: Set up Haxe, Install Android SDK, NDK, JDK, and Build
         run: |

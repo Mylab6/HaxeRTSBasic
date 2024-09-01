@@ -60,7 +60,7 @@ class EnemyBox extends SVGBox
 
 		// Set the box to temporarily not be able to take damage
 		canTakeDamage = false;
-		damageCooldown.start(0.2, enableDamage);
+		damageCooldown.start(0.4, enableDamage);
 
 		// Apply damage to HP
 		HP -= damage;
