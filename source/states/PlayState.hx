@@ -65,10 +65,7 @@ class PlayState extends FlxState
 		#end
 
 		// Add groups to the state
-        add(redBoxes);
-        add(blueBoxes);
-        add(greenBoxes);
-		add(projectiles);
+
 
 		// Initialize and add the BigBox
 		bigBox = new BigBox(FlxG.width / 2 - 50, 10, projectiles); // Positioned at the top
@@ -93,6 +90,10 @@ class PlayState extends FlxState
 		add(redBoxEmitters);
 		add(blueBoxEmitters);
 		add(greenBoxEmitters);
+		add(redBoxes);
+		add(blueBoxes);
+		add(greenBoxes);
+		add(projectiles);
 
 		// Create SpawnerInfo array
 		var spawners:Array<SpawnerInfo> = [

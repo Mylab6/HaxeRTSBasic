@@ -6,10 +6,10 @@ import flixel.util.FlxColor;
 
 class Projectile extends FlxSprite
 {
-	public function new(x:Float, y:Float, velocity:FlxPoint)
+	public function new(x:Float, y:Float, velocity:FlxPoint, color:FlxColor, size:Int)
     {
         super(x, y);
-		makeGraphic(10, 10, FlxColor.YELLOW); // Example size and color
+		makeGraphic(size, size, color); // Example size and color
 		this.velocity = velocity; // Set the projectile's velocity
     }
 

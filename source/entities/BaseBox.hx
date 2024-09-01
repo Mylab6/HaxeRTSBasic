@@ -13,7 +13,7 @@ class BaseBox extends OutlinedBox
 	public var movementSpeed:Float = 100; 
     public function new(x:Float, y:Float, color:Int)
     {
-        super(x, y, color);
+		super(x, y, 100, color);
         //makeGraphic(50, 50, color);
 
         // Create a particle emitter

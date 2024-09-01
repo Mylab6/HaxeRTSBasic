@@ -28,10 +28,8 @@ class GreenBox extends BaseBox
 		// Throw a dart towards the BigBox
 		var dartDirection:FlxPoint = new FlxPoint(FlxG.mouse.x - this.x, FlxG.mouse.y - this.y); // Adjust this to bigBox
 		dartDirection.normalize();
-
-		var dart = new FlxSprite(this.x, this.y);
-		dart.makeGraphic(10, 5, FlxColor.YELLOW); // Simple dart graphic
-		dart.velocity.set(dartDirection.x * 200, dartDirection.y * 200); // Set dart speed
-		FlxG.state.add(dart);
+		var projectile = new Projectile(x + width / 2, y + height / 2, velocity * 2, FlxColor.MAGENTA, 20);
+		// projectiles.add(projectile);
+		FlxG.state.add(projectile);
     }
 }

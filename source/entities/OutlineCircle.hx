@@ -1,10 +1,10 @@
 package entities;
 
-import flixel.addons.display.shapes.FlxShapeSquareDonut;
+import flixel.addons.display.shapes.FlxShapeDoubleCircle;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil.LineStyle;
 
-class OutlinedBox extends FlxShapeSquareDonut
+class OutlineCircle extends FlxShapeDoubleCircle
 {
 	public function new(x:Float, y:Float, outerSize:Int, outerColor:Int)
     {
@@ -20,9 +20,8 @@ class OutlinedBox extends FlxShapeSquareDonut
 			pixelHinting: true // Pixel hinting
 		};
 		// Call the super constructor with the desired parameters
-		super(outerSize, innerSize, 20, 20, lineStyle, outerColor);
-		this.shapeDirty = true;
-		this.fillColor = outerColor;
+		super(outerSize, innerSize, outerSize, outerSize, lineStyle, outerColor);
+
 		// Set the position
 		this.x = x;
 		this.y = y;

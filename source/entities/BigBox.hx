@@ -96,7 +96,7 @@ class BigBox extends FlxSprite
 		var velocity:FlxPoint = new FlxPoint(Math.cos(turretAngle) * speed, Math.sin(turretAngle) * speed);
 
 		// Create and fire the projectile
-		var projectile = new Projectile(x + width / 2, y + height / 2, velocity);
+		var projectile = new Projectile(x + width / 2, y + height / 2, velocity * 2, FlxColor.CYAN, 20);
 		projectiles.add(projectile);
     }
 
