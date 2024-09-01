@@ -13,6 +13,9 @@ jobs:
     name: Build Project
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - uses: krdlab/setup-haxe@v1
         with:
           haxe-version: 4.3.4
@@ -45,10 +48,10 @@ jobs:
           haxelib install openfl 9.3.4
           
           # Build for Android
-          haxelib run lime build android -final
+          haxelib run lime build android -final path/to/your/project.xml
           
           # Build for HTML5
-          haxelib run lime build html5 -final
+          haxelib run lime build html5 -final path/to/your/project.xml
 
       - name: Upload Android Build
         uses: actions/upload-artifact@v2
