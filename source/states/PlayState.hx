@@ -160,8 +160,14 @@ class PlayState extends FlxState
 	private function onProjectileHitBox(box:FlxSprite, projectile:FlxSprite):Void
 	{
 		// Cast to BaseBox to access the hit method
+		var projectileF = cast(projectile, Projectile); // Cast to BaseBox to access the hit method
+		if (!projectileF.EnemyProjectile)
+		{
+			return;
+		}
+		var pos = projectileF.getPosition();
 		var baseBox = cast(box, BaseBox);
-		baseBox.hit(); // Trigger the hit effect and kill the box
+		baseBox.hit(projectileF.Damaga, pos.x, pos.y); // Trigger the hit effect and kill the box
 
 		projectile.kill(); // Destroy the projectile on impact
 	}
