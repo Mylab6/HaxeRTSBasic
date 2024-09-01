@@ -48,7 +48,9 @@ jobs:
           haxelib install flxsvg 1.0.2
           haxelib install flixel 5.8.0 
           haxelib install openfl 9.3.4
-          
+          haxelib run lime setup flixel
+          haxelib run lime setup
+
           # Build for Android
           haxelib run lime build android 
           

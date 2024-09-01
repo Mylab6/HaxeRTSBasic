@@ -21,6 +21,7 @@ import managers.SpawnerInfo; // Import SpawnerInfo type
 import openfl.filters.BitmapFilter;
 import openfl.filters.ShaderFilter;
 import ui.GameUI;
+import utils.MazeMaker;
 #if shaders_supported
 import filters.*;
 import openfl.Lib;
@@ -46,6 +47,7 @@ class PlayState extends FlxState
 	private var behaviorManager:EnemyBehaviorManager;
 	private var gameUI:GameUI;
 
+	private var mazeMaker:MazeMaker;
 
     override public function create():Void
     {
@@ -73,22 +75,32 @@ class PlayState extends FlxState
 
 
 		// Initialize and add the BigBox
+
 		enemyBox = new EnemyBox(FlxG.width / 2 - 50, 10, projectiles); // Positioned at the top
 		add(enemyBox);
 		add(enemyBox.aimLine);
 
-		var spawnerWidth = 160; // The width of each spawner including the outline
+		var gridWidth:Int = Std.int(FlxG.width / 32);
+		var gridHeight:Int = Std.int((FlxG.height - 300) / 32); // 300 accounts for top and bottom space
+		//	gridWidth = Std.int(gridWidth);
+		//		gridHeight = Std.int(gridHeight);
+		var topOffset:Int = 100; // Space reserved for the turret
+		var bottomOffset:Int = 200; // Space reserved for the spawners
+
+		// Create and add the maze
+		mazeMaker = new MazeMaker(gridWidth, gridHeight, topOffset, bottomOffset);
+		mazeMaker.addToState(this);
+
+		// Position the spawners at the bottom
+		var spawnerWidth = 160; // Width of each spawner
 		var totalWidth = spawnerWidth * 3;
 		var spacing = (FlxG.width - totalWidth) / 4; // Calculate the spacing between the spawners
-
 		var yPosition = FlxG.height - spawnerWidth - 10; // Positioning 10 pixels above the bottom
 
-		// Create and position the spawners
 		redSpawner = createSpawnerWithOutline(spacing, yPosition, FlxColor.RED);
 		greenSpawner = createSpawnerWithOutline(spacing * 2 + spawnerWidth, yPosition, FlxColor.GREEN);
 		blueSpawner = createSpawnerWithOutline(spacing * 3 + spawnerWidth * 2, yPosition, FlxColor.BLUE);
 
-	
 		add(redSpawner);
 		add(blueSpawner);
 		add(greenSpawner);
@@ -154,7 +166,7 @@ class PlayState extends FlxState
 		{
 			return;
 		}
-		enemyBox.TakeDamage(projectileF.Damaga);
+		enemyBox.TakeDamage(projectileF.Damage);
 		projectile.kill(); // Destroy the projectile on impact
 	}
 	private function onProjectileHitBox(box:FlxSprite, projectile:FlxSprite):Void
@@ -167,7 +179,7 @@ class PlayState extends FlxState
 		}
 		var pos = projectileF.getPosition();
 		var baseBox = cast(box, BaseBox);
-		baseBox.hit(projectileF.Damaga, pos.x, pos.y); // Trigger the hit effect and kill the box
+		baseBox.hit(projectileF.Damage, pos.x, pos.y); // Trigger the hit effect and kill the box
 
 		projectile.kill(); // Destroy the projectile on impact
 	}

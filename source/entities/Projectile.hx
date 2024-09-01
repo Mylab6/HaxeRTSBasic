@@ -7,7 +7,7 @@ import flixel.util.FlxColor;
 
 class Projectile extends SVGBox
 {
-	public var Damaga:Int = 10;
+	public var Damage:Int = 10;
 	public var EnemyProjectile:Bool;
 
 	public function new(x:Float, y:Float, velocity:FlxPoint, color:FlxColor, size:Int, enemyProjectile:Bool)
