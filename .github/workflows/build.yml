@@ -26,6 +26,12 @@ jobs:
 
       - name: Install additional libraries
         run: haxelib install flxsvg 1.0.2
+      
+        
+      - name: Install additional flixel
+        run:  haxelib install flixel 5.8.0 
+      
+       
 
       - name: Build Android
         run: haxelib run lime build android -final
@@ -47,6 +53,10 @@ jobs:
 
       - name: Install additional libraries
         run: haxelib install flxsvg 1.0.2
+      
+
+      - name: Install additional flixel
+        run:  haxelib install flixel 5.8.0 
 
       - name: Build HTML5
         run: haxelib run lime build html5 -final
