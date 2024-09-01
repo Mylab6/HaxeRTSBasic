@@ -35,11 +35,11 @@ class EnemyBox extends SVGBox
 
 		// Initialize the aim line
 		aimLine = new FlxSprite();
-		aimLine.makeGraphic(100, 5, FlxColor.RED); // Thin red line
+		aimLine.makeGraphic(100, 20, FlxColor.RED); // Thin red line
 		aimLine.origin.set(0, 1); // Set the origin at the start of the line
 		// Initialize movement
 		this.direction = 1; // Start moving right
-		this.speed = 100; // Speed of movement in pixels per second
+		this.speed = 140; // Speed of movement in pixels per second
 	}
 
 	override public function update(elapsed:Float):Void
