@@ -20,6 +20,7 @@ import managers.SpawnManager;
 import managers.SpawnerInfo; // Import SpawnerInfo type
 import openfl.filters.BitmapFilter;
 import openfl.filters.ShaderFilter;
+import ui.GameUI;
 #if shaders_supported
 import filters.*;
 import openfl.Lib;
@@ -43,6 +44,8 @@ class PlayState extends FlxState
 	private var greenBoxEmitters:FlxGroup;
 	private var spawnManager:SpawnManager;
 	private var behaviorManager:EnemyBehaviorManager;
+	private var gameUI:GameUI;
+
 
     override public function create():Void
     {
@@ -110,6 +113,8 @@ class PlayState extends FlxState
 
 		// Start spawning enemies
 		spawnManager.startSpawning();
+		gameUI = new GameUI(30, 100);
+		gameUI.addToState(this);
 	}
 
 	private function createSpawnerWithOutline(x:Float, y:Float, color:Int):Spawner
@@ -124,7 +129,9 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-
+		// Example of updating the boss HP, e.g., after taking damage
+		// Call this method wherever necessary, e.g., after the boss takes damage
+		gameUI.updateBossHP(enemyBox.HP);
 		// Update nearest target and aim
 		var nearestBox:FlxSprite = behaviorManager.findNearestBox(enemyBox);
 		if (nearestBox != null)
