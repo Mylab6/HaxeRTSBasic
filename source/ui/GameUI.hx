@@ -24,9 +24,9 @@ class GameUI
 	private var currentTab:String;
 
 	private var energyBar:FlxBar;
+	private var energyBarSlow:FlxBar;
 	private var energyTimer:FlxTimer;
 	private var energy:Int = 0;
-
 	private static inline var MAX_ENERGY:Int = 3;
 
 	public function new(time:Int)
@@ -59,9 +59,20 @@ class GameUI
 		hpText = new FlxText(FlxG.width - 310, 10, 280, "Boss HP: ");
 		hpText.setFormat(null, 32, 0xFFFFFF); // Set text color to white and size to 32
 
-		// Initialize the energy bar
+		// Initialize the energy bars
 		energyBar = new FlxBar(10, 80, FlxBarFillDirection.LEFT_TO_RIGHT, 200, 20, this, "energy", 0, MAX_ENERGY);
-		energyBar.createFilledBar(FlxColor.GRAY, FlxColor.YELLOW);
+		energyBar.createFilledBar(FlxColor.GRAY, FlxColor.CYAN);
+		energyBarSlow = new FlxBar(10, 105, FlxBarFillDirection.LEFT_TO_RIGHT, 200, 5, this, "energy", 0, MAX_ENERGY);
+		energyBarSlow.createFilledBar(FlxColor.GRAY, FlxColor.CYAN);
+		energyBarSlow.alpha = 0.5; // Make the slow bar semi-transparent
+
+		// Add indicators to the energy bars
+		for (i in 0...MAX_ENERGY - 1)
+		{
+			var indicator:FlxSprite = new FlxSprite(10 + (i + 1) * (200 / MAX_ENERGY), 80);
+			indicator.makeGraphic(2, 20, FlxColor.BLACK);
+			//	energyBar.parent.add(indicator);
+		}
 
 		// Initialize the menu button
 		menuButton = new FlxButton(FlxG.width - 330, FlxG.height - 165, "Menu", openMenu);
@@ -79,9 +90,9 @@ class GameUI
 		menuGroup.add(menuBackground);
 
 		// Add tabs and descriptions to the menu (arranged horizontally)
-		addTab("Red", "Upgrade Reds", 10, Std.int((FlxG.width - 660) / 2));
-		addTab("Green", "Upgrade Greens", 10, Std.int((FlxG.width - 460) / 2));
-		addTab("Blue", "Upgrade Blues", 10, Std.int((FlxG.width - 260) / 2));
+		addTab("Red", "Upgrade Reds", 10, Math.round((FlxG.width - 660) / 2));
+		addTab("Green", "Upgrade Greens", 10, Math.round((FlxG.width - 460) / 2));
+		addTab("Blue", "Upgrade Blues", 10, Math.round((FlxG.width - 260) / 2));
     }
 
     private function updateTimer(timer:FlxTimer):Void
@@ -104,6 +115,7 @@ class GameUI
 		{
 			energy++;
 			energyBar.value = energy;
+			energyBarSlow.value = energy;
 		}
 	}
 
@@ -123,6 +135,7 @@ class GameUI
         state.add(timerText);
         state.add(hpText);
 		state.add(energyBar); // Add the energy bar to the state
+		state.add(energyBarSlow); // Add the slow charging energy bar to the state
 
 		// Add the menu button to the state
 		state.add(menuButton);
@@ -187,6 +200,7 @@ class GameUI
 	{
 		// Logic for upgrading speed
     }
+
 	private function upgradeHP():Void
 	{
 		// Logic for upgrading HP
@@ -198,6 +212,7 @@ class GameUI
 		{
 			energy -= 3;
 			energyBar.value = energy;
+			energyBarSlow.value = energy;
 			// Logic for upgrading special ability
 		}
 	}
