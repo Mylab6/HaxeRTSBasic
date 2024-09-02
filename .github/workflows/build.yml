@@ -36,15 +36,15 @@ jobs:
           haxelib install flixel 5.8.0 
           haxelib install openfl 9.3.4
           haxelib run lime setup flixel
-          haxelib run lime setup
-          haxelib run lime setup android
-          haxelib run lime setup html5
+          haxelib run lime setup -y
+          lime setup android
+          lime setup html5 -y
 
           # Build for Android
-          haxelib run lime build android 
+          haxelib run lime build android -y
           
           # Build for HTML5
-          haxelib run lime build html5 
+          haxelib run lime build html5 -y
 
       - name: Upload Android Build
         uses: actions/upload-artifact@v2

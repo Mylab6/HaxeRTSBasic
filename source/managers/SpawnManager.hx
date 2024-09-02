@@ -27,7 +27,7 @@ class SpawnManager
     public function startSpawning():Void
     {
         redBoxTimer.start(2, spawnRedBox, 0); // Spawn a red box every 2 seconds
-		blueBoxTimer.start(3, spawnBlueBox, 0); // Spawn a blue box every 3 seconds
+		//	blueBoxTimer.start(3, spawnBlueBox, 0); // Spawn a blue box every 3 seconds
         greenBoxTimer.start(4, spawnGreenBox, 0); // Spawn a green box every 4 seconds
     }
 
