@@ -114,7 +114,7 @@ jobs:
 
           lime setup flixel 
 
-          lime setup android -y 
+          lime setup android -n --sdk $ANDROID_SDK --ndk $ANDROID_NDK_ROOT
           
           # Display installed Haxelib libraries for debugging
           haxelib list
