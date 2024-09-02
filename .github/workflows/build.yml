@@ -74,7 +74,7 @@ jobs:
               chmod +x butler
               sudo mv butler /usr/local/bin
 
-      - name: Login to Butler
+      - name: Login to Butler n
         run: butler login
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER }}
