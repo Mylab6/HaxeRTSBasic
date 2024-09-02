@@ -22,11 +22,11 @@ jobs:
           haxe-version: 4.3.4
 
       - name: Set up Java
+        id: setup-java
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'  # Eclipse Temurin is a popular choice
-          java-version: '17.0.11+9'  # Java 11 is commonly used with Android
-  
+          distribution: 'adopt'
+          java-version: '17.0.11+9'
 
       - name: Cache Haxelib
         uses: actions/cache@v3
@@ -38,8 +38,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-haxelib-
 
-      - name: Setup Haxe libraries and build
-
+      - name: Setup Haxe libraries and build for HTML5
         env:
           JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}
         run: |
@@ -53,26 +52,70 @@ jobs:
 
           lime setup flixel
 
-          lime setup android -y
           lime setup html5 -y
           
           # Display installed Haxelib libraries for debugging
           haxelib list
 
-          # Build for Android
-          lime build android -verbose -y
-          
           # Build for HTML5
           lime build html5 -verbose -y
-
-      - name: Upload Android Build
-        uses: actions/upload-artifact@v3
-        with:
-          name: android-apk
-          path: export/release/android/bin/app/build/outputs/apk/debug/*.apk
 
       - name: Upload HTML5 Build
         uses: actions/upload-artifact@v3
         with:
           name: html5-build
           path: export/release/html5/bin
+
+      - name: Login to Butler
+        run: butler login
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER }}
+
+      - name: Push HTML5 build to Itch.io
+        run: butler push build/html5 ${{ secrets.ITCH_URL }}:html5
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER }}
+
+      - name: Install Android SDK and NDK
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget unzip
+          wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -O cmdline-tools.zip
+          mkdir -p $HOME/android-sdk/cmdline-tools
+          unzip cmdline-tools.zip -d $HOME/android-sdk/cmdline-tools
+          export ANDROID_SDK_ROOT=$HOME/android-sdk
+          export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/bin
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3" "ndk;21.4.7075529"
+        env:
+          JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}
+
+      - name: Setup Haxe libraries and build for Android
+        env:
+          JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}
+          ANDROID_SDK: ${{ env.ANDROID_SDK_ROOT }}
+          ANDROID_NDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}/ndk/21.4.7075529
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install lime --quiet
+          haxelib install hxcpp --quiet
+          haxelib install flxsvg 1.0.2 --quiet
+          haxelib install flixel 5.8.0 --quiet
+          haxelib install openfl 9.3.4 --quiet
+          haxelib run lime setup -y
+
+          lime setup flixel
+
+          lime setup android -y
+          
+          # Display installed Haxelib libraries for debugging
+          haxelib list
+
+          # Build for Android
+          lime build android -verbose -y
+
+      - name: Upload Android Build
+        uses: actions/upload-artifact@v3
+        with:
+          name: android-apk
+          path: export/release/android/bin/app/build/outputs/apk/debug/*.apk
