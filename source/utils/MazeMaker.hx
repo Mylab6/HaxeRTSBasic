@@ -12,14 +12,17 @@ class MazeMaker
     private var tileSize:Int;
     private var gridWidth:Int;
 	private var gridHeight:Int;
-	private var numberOfBarriers:Int;
+	private var topDeadzone:Int;
+	private var bottomDeadzone:Int;
 
-	public function new(tileSize:Int = 32, numberOfBarriers:Int = 5)
+	public function new(tileSize:Int = 32, topDeadzone:Int = 100, bottomDeadzone:Int = 200)
     {
         this.tileSize = tileSize;
 		this.gridWidth = Math.ceil(FlxG.width / tileSize);
 		this.gridHeight = Math.ceil(FlxG.height / tileSize);
-		this.numberOfBarriers = numberOfBarriers;
+		this.topDeadzone = Math.round(topDeadzone / tileSize);
+		this.bottomDeadzone = Math.round((FlxG.height - bottomDeadzone) / tileSize);
+
 		mazeWalls = new FlxGroup();
 		createBorderWalls();
 		createHorizontalBarriers();
@@ -45,12 +48,13 @@ class MazeMaker
 	private function createHorizontalBarriers():Void
     {
 		// Define the number of barriers and the spacing between them
-		var spacing:Int = Math.ceil(gridHeight / (numberOfBarriers + 1));
+		var numberOfBarriers:Int = 3; // You can change this to have more or fewer barriers
+		var spacing:Int = Math.round((bottomDeadzone - topDeadzone) / (numberOfBarriers + 1));
 
 		for (i in 1...numberOfBarriers + 1)
         {
 			var barrierLengthRatio = 0.7 + FlxG.random.float(0.15, 0.15); // Random length between 70% to 85%
-			createHorizontalBarrier(spacing * i, barrierLengthRatio);
+			createHorizontalBarrier(topDeadzone + spacing * i, barrierLengthRatio);
 		}
 	}
 
