@@ -15,7 +15,7 @@ class GreenBox extends BaseBox
 
 	public function new(x:Float, y:Float, projectiles:FlxGroup)
     {
-		super(x, y, FlxColor.GREEN);
+		super(x, y, FlxColor.GREEN, 45);
 		this.projectiles = projectiles;
 
 		// makeGraphic(100, 100, FlxColor.GREEN);

@@ -19,9 +19,9 @@ class BaseBox extends SVGBox
 	private var kickbackVelocity:FlxPoint;
 	private var recoveringFromKickback:Bool = false;
 
-    public function new(x:Float, y:Float, color:Int)
+	public function new(x:Float, y:Float, color:Int, size:Int)
     {
-		super(x, y, 45, color, null);
+		super(x, y, size, color, null);
 
         // Create a particle emitter
         emitter = new FlxEmitter(x + width / 2, y + height / 2, 50);

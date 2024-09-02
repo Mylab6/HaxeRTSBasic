@@ -8,7 +8,7 @@ class RedBox extends BaseBox
 {
     public function new(x:Float, y:Float)
 	{
-		super(x, y, FlxColor.RED);
+		super(x, y, FlxColor.RED, 45);
 	}
 
 	public function updateBehavior(bigBox:EnemyBox):Void

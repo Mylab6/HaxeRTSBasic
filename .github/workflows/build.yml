@@ -45,10 +45,10 @@ jobs:
           haxelib install flxsvg 1.0.2 --quiet
           haxelib install flixel 5.8.0 --quiet
           haxelib install openfl 9.3.4 --quiet
-          haxelib run lime setup flixel
-          haxelib run lime setup -y
+          lime setup flixel
+
           lime setup android -y
-          haxelib run lime setup html5 -y
+          lime setup html5 -y
           
           # Display installed Haxelib libraries for debugging
           haxelib list
@@ -57,7 +57,7 @@ jobs:
           lime build android -verbose -y
           
           # Build for HTML5
-          haxelib run lime build html5 -verbose -y
+          lime build html5 -verbose -y
 
       - name: Upload Android Build
         uses: actions/upload-artifact@v3
