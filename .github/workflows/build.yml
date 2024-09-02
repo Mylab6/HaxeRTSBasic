@@ -21,11 +21,12 @@ jobs:
         with:
           haxe-version: 4.3.4
 
-      - name: Setup Java
-        uses: actions/setup-java@v3
+      - name: Set up Java
+        uses: actions/setup-java@v2
         with:
-          distribution: 'temurin'
-          java-version: '11'
+          distribution: 'adopt'  # Eclipse Temurin is a popular choice
+          java-version: '17.0.11+9'  # Java 11 is commonly used with Android
+  
 
       - name: Cache Haxelib
         uses: actions/cache@v3
@@ -38,6 +39,9 @@ jobs:
             ${{ runner.os }}-haxelib-
 
       - name: Setup Haxe libraries and build
+
+        env:
+          JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}
         run: |
           haxelib setup ~/haxelib
           haxelib install lime --quiet

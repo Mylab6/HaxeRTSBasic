@@ -94,6 +94,7 @@ class BaseBox extends SVGBox
 	}
 	private function playDeathSound()
 	{
+		return;
 		var pitch:Float = new FlxRandom().float(0.8, 1.2);
 		FlxG.sound.play("assets/sounds/boom.wav", 1, false);
 
