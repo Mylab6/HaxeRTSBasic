@@ -52,7 +52,9 @@ class BaseBox extends SVGBox
 			{
 				bigBox.TakeDamage(Damage);
 			}
-
+			// play sound
+			// it's in the assets folder
+			playDeathSound();
 			kill();
 		}
 	}
@@ -69,6 +71,8 @@ class BaseBox extends SVGBox
 		HP -= damage;
 		if (HP <= 0)
 		{
+			// randomize the pitch
+			playDeathSound(); 
 			kill();
 		}
 		else
@@ -88,7 +92,12 @@ class BaseBox extends SVGBox
 			FlxTimer.wait(0.5, slowDown);
 		}
 	}
+	private function playDeathSound()
+	{
+		var pitch:Float = new FlxRandom().float(0.8, 1.2);
+		FlxG.sound.play("assets/sounds/boom.wav", 1, false);
 
+	}
 	private function slowDown():Void
 	{
 		// Gradually reduce the velocity to simulate a slowdown
