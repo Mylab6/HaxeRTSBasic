@@ -65,7 +65,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: html5-build
-          path: export/release/html5/bin
+          path: export/html5/bin
 
       - name: Install Butler
         run: |
@@ -80,7 +80,7 @@ jobs:
           BUTLER_API_KEY: ${{ secrets.BUTLER }}
 
       - name: Push HTML5 build to Itch.io
-        run: butler push build/html5 ${{ secrets.ITCH_URL }}:html5
+        run: butler push export/html5/bin ${{ secrets.ITCH_URL }}:html5
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER }}
 
