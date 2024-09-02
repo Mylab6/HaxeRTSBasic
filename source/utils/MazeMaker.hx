@@ -48,12 +48,12 @@ class MazeMaker
 	private function createHorizontalBarriers():Void
     {
 		// Define the number of barriers and the spacing between them
-		var numberOfBarriers:Int = 3; // You can change this to have more or fewer barriers
+		var numberOfBarriers:Int = 8; // You can change this to have more or fewer barriers
 		var spacing:Int = Math.round((bottomDeadzone - topDeadzone) / (numberOfBarriers + 1));
 
 		for (i in 1...numberOfBarriers + 1)
         {
-			var barrierLengthRatio = 0.7 + FlxG.random.float(0.15, 0.15); // Random length between 70% to 85%
+			var barrierLengthRatio = 0.4 + FlxG.random.float(0.15, 0.15); // Random length between 70% to 85%
 			createHorizontalBarrier(topDeadzone + spacing * i, barrierLengthRatio);
 		}
 	}
@@ -65,7 +65,7 @@ class MazeMaker
 		var startX:Int = FlxG.random.int(1, gridWidth - barrierLength - 1); // Ensure it doesn't touch the borders
 
 		// Randomly decide whether to create a gap in the barrier
-		var hasGap:Bool = FlxG.random.bool(0.5); // 50% chance to have a gap
+		var hasGap:Bool = FlxG.random.bool(0.7); // 50% chance to have a gap
 		var gapStart:Int = hasGap ? startX + Math.round(barrierLength / 3) : -1;
 		var gapEnd:Int = hasGap ? gapStart + Math.round(barrierLength / 3) : -1;
 

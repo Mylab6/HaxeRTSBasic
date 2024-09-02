@@ -15,6 +15,7 @@ import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import haxe.Log;
 import managers.EnemyBehaviorManager;
 import managers.SpawnManager;
 import managers.SpawnerInfo; // Import SpawnerInfo type
@@ -143,13 +144,19 @@ class PlayState extends FlxState
 
 	private function bounceOffWall(item1:FlxSprite, item2:FlxSprite):Void
 	{
-		// Bounce off the wall
-		item1.velocity.x *= -1;
-		item1.velocity.y *= -1;
-
-		item2.velocity.x *= -1;
-		item2.velocity.y *= -1;
+		// Coefficient of restitution (how bouncy the collision is)
+		var elasticity:Float = 1.0; // 1.0 means perfect bounce, less than 1.0 means less bounce
+		Log.trace("Bounce off wall");
+		if (item1.velocity.x != 0)
+		{
+			item1.velocity.x *= -elasticity;
+		}
+		if (item1.velocity.y != 0)
+		{
+			item1.velocity.y *= -elasticity;
+		}
 	}
+		
 	private function createSpawnerWithOutline(x:Float, y:Float, color:Int):Spawner
 	{
 		// Create the spawner with an outline
