@@ -64,9 +64,17 @@ class MazeMaker
 		var barrierLength:Int = Math.round(gridWidth * lengthRatio);
 		var startX:Int = FlxG.random.int(1, gridWidth - barrierLength - 1); // Ensure it doesn't touch the borders
 
-		// Create a horizontal barrier that spans the calculated length
+		// Randomly decide whether to create a gap in the barrier
+		var hasGap:Bool = FlxG.random.bool(0.5); // 50% chance to have a gap
+		var gapStart:Int = hasGap ? startX + Math.round(barrierLength / 3) : -1;
+		var gapEnd:Int = hasGap ? gapStart + Math.round(barrierLength / 3) : -1;
+
+		// Create a horizontal barrier that spans the calculated length, with a possible gap in the middle
 		for (i in startX...(startX + barrierLength))
 		{
+			if (hasGap && i >= gapStart && i <= gapEnd)
+				continue; // Skip creating walls within the gap
+
 			createWall(i * tileSize, row * tileSize);
         }
     }
@@ -74,6 +82,7 @@ class MazeMaker
     private function createWall(x:Float, y:Float):Void
     {
 		var wall = new FlxSprite(x, y).makeGraphic(tileSize, tileSize, FlxColor.GRAY);
+		wall.immovable = true; // Ensure the wall doesn't move
         mazeWalls.add(wall);
     }
 
