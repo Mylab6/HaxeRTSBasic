@@ -54,7 +54,7 @@ jobs:
           haxelib run lime setup html5
 
           # Build for Android
-          haxelib run lime build android 
+          #haxelib run lime build android 
           
           # Build for HTML5
           haxelib run lime build html5 
