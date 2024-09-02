@@ -47,14 +47,14 @@ jobs:
           haxelib install openfl 9.3.4 --quiet
           haxelib run lime setup flixel
           haxelib run lime setup -y
-          haxelib run lime setup android -y
+          lime setup android -y
           haxelib run lime setup html5 -y
           
           # Display installed Haxelib libraries for debugging
           haxelib list
 
           # Build for Android
-          haxelib run lime build android -verbose -y
+          lime build android -verbose -y
           
           # Build for HTML5
           haxelib run lime build html5 -verbose -y
