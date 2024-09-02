@@ -82,7 +82,7 @@ class PlayState extends FlxState
 
 		// Create and add the maze with horizontal barriers
 		mazeMaker = new MazeMaker(); // Adjust tile size if needed
-		mazeMaker.addToState(this);
+		var mazeWallGroup = mazeMaker.addToState(this);
 
 
 		// Position the spawners at the bottom
@@ -105,6 +105,14 @@ class PlayState extends FlxState
 		add(blueBoxes);
 		add(greenBoxes);
 		add(projectiles);
+		FlxG.collide(mazeWallGroup, redBoxEmitters);
+		FlxG.collide(mazeWallGroup, blueBoxEmitters);
+		FlxG.collide(mazeWallGroup, greenBoxEmitters);
+		FlxG.collide(mazeWallGroup, redBoxes);
+		FlxG.collide(mazeWallGroup, blueBoxes);
+		FlxG.collide(mazeWallGroup, greenBoxes);
+		FlxG.collide(mazeWallGroup, projectiles);
+
 
 		// Create SpawnerInfo array
 		var spawners:Array<SpawnerInfo> = [

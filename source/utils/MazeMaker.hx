@@ -86,8 +86,9 @@ class MazeMaker
         mazeWalls.add(wall);
     }
 
-    public function addToState(state:FlxGroup):Void
-    {
-        state.add(mazeWalls);
-    }
+	public function addToState(state:FlxGroup):FlxGroup
+	{
+		state.add(mazeWalls);
+		return mazeWalls;
+	}
 }
