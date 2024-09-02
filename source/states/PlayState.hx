@@ -105,14 +105,16 @@ class PlayState extends FlxState
 		add(blueBoxes);
 		add(greenBoxes);
 		add(projectiles);
-		FlxG.collide(mazeWallGroup, redBoxEmitters);
-		FlxG.collide(mazeWallGroup, blueBoxEmitters);
-		FlxG.collide(mazeWallGroup, greenBoxEmitters);
-		FlxG.collide(mazeWallGroup, redBoxes);
-		FlxG.collide(mazeWallGroup, blueBoxes);
-		FlxG.collide(mazeWallGroup, greenBoxes);
-		FlxG.collide(mazeWallGroup, projectiles);
-
+		var listOfWallCol:Array<FlxGroup> = [
+			redBoxEmitters,
+			blueBoxEmitters,
+			greenBoxEmitters,
+			redBoxes,
+			blueBoxes,
+			greenBoxes,
+			projectiles
+		];
+		applyMazeCol(listOfWallCol, mazeWallGroup); 
 
 		// Create SpawnerInfo array
 		var spawners:Array<SpawnerInfo> = [
@@ -131,6 +133,23 @@ class PlayState extends FlxState
 		gameUI.addToState(this);
 	}
 
+	function applyMazeCol(listOfWallCol:Array<FlxGroup>, mazeWallGroup:FlxGroup)
+	{
+		for (group in listOfWallCol)
+		{
+			FlxG.collide(group, mazeWallGroup, bounceOffWall);
+		}
+	}
+
+	private function bounceOffWall(item1:FlxSprite, item2:FlxSprite):Void
+	{
+		// Bounce off the wall
+		item1.velocity.x *= -1;
+		item1.velocity.y *= -1;
+
+		item2.velocity.x *= -1;
+		item2.velocity.y *= -1;
+	}
 	private function createSpawnerWithOutline(x:Float, y:Float, color:Int):Spawner
 	{
 		// Create the spawner with an outline
