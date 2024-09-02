@@ -66,6 +66,13 @@ jobs:
           name: html5-build
           path: export/release/html5/bin
 
+      - name: Install Butler
+        run: |
+              curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+              unzip butler.zip
+              chmod +x butler
+              sudo mv butler /usr/local/bin
+
       - name: Login to Butler
         run: butler login
         env:
