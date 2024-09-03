@@ -26,7 +26,9 @@ class BaseBox extends SVGBox
         // Create a particle emitter
         emitter = new FlxEmitter(x + width / 2, y + height / 2, 50);
 		emitter.makeParticles(5, 5, color, 50); // Create particles matching the box color
-    }
+		elasticity = 0.5;
+	
+	}
 
 	public function MoveTowards(bigBox:EnemyBox, minDistance:Float, CanRam:Bool):Void
 	{
