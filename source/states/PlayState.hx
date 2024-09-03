@@ -22,6 +22,7 @@ import openfl.display.Tilemap;
 import openfl.filters.BitmapFilter;
 import openfl.filters.ShaderFilter;
 import ui.GameUI;
+import utils.BasicTileMap;
 
 class PlayState extends FlxState
 {
@@ -78,6 +79,8 @@ class PlayState extends FlxState
 		add(blueBoxes);
 		add(greenBoxes);
 		add(projectiles);
+		var newMap = new BasicTileMap();
+		// add(newMap.map);
 		var listOfWallCol:Array<FlxGroup> = [
 			redBoxEmitters,
 			blueBoxEmitters,
