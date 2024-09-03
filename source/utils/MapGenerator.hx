@@ -1,57 +1,49 @@
 package utils;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup;
+import flixel.tile.FlxBaseTilemap.FlxTilemapAutoTiling;
+import flixel.tile.FlxTileblock;
+import flixel.tile.FlxTilemap;
 
 class MapGenerator
 {
 	public var tileSize:Int;
 	public var mapWidth:Int;
 	public var mapHeight:Int;
-	public var edgeTiles:FlxGroup;
 
 	public function new(tileSize:Int, mapWidth:Int, mapHeight:Int)
 	{
 		this.tileSize = tileSize;
 		this.mapWidth = mapWidth;
 		this.mapHeight = mapHeight;
-		this.edgeTiles = new FlxGroup();
 	}
 
-	public function generateEdgeMap():FlxGroup
+	public function generateEdgeMap():FlxTileblock
 	{
-		// Top and bottom edges
-		for (x in 0...mapWidth)
-		{
-			// Top edge
-			var topTile = createTile(x * tileSize, 0);
-			edgeTiles.add(topTile);
+		var mapArray:Array<Int> = [];
 
-			// Bottom edge
-			var bottomTile = createTile(x * tileSize, (mapHeight - 1) * tileSize);
-			edgeTiles.add(bottomTile);
+		for (y in 0...mapHeight)
+		{
+			for (x in 0...mapWidth)
+			{
+				if (y < 3 || y >= mapHeight - 3 || x < 3 || x >= mapWidth - 3)
+				{
+					mapArray.push(1); // Tile index for the edge
+				}
+				else if (y == Math.floor(mapHeight / 2) && x % 5 == 0)
+				{
+					mapArray.push(1); // Tile index for barriers
+				}
+				else
+				{
+					mapArray.push(0); // Tile index for empty space
+				}
+			}
 		}
 
-		// Left and right edges
-		for (y in 1...mapHeight - 1)
-		{
-			// Left edge
-			var leftTile = createTile(0, y * tileSize);
-			edgeTiles.add(leftTile);
-
-			// Right edge
-			var rightTile = createTile((mapWidth - 1) * tileSize, y * tileSize);
-			edgeTiles.add(rightTile);
-		}
-
-		return edgeTiles;
-	}
-
-	// Function to create a tile sprite
-	function createTile(x:Float, y:Float):FlxSprite
-	{
-		var tile = new FlxSprite(x, y);
-		tile.makeGraphic(tileSize, tileSize, 0xFF000000); // Black color for the edge tiles
-		return tile;
+		var block = new FlxTileblock(16, 16, FlxG.width - 32, FlxG.height - 32);
+		block.loadTiles("assets/images/tiles.png", 16, 16);
+		return block;
 	}
 }

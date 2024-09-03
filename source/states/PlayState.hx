@@ -61,6 +61,22 @@ class PlayState extends FlxState
 		FlxG.game.filters = filters;
 		#end
 		enemyBox = new EnemyBox(FlxG.width / 2 - 50, 10, projectiles);
+		var mapGenerator:MapGenerator;
+		var tileSize:Int = 16;
+		var mapWidth:Int;
+		var mapHeight:Int = FlxG.height;
+
+		// Calculate the number of tiles that fit horizontally based on the screen width
+		mapWidth = Math.ceil(FlxG.width / tileSize);
+
+		// Create the map generator
+		mapGenerator = new MapGenerator(tileSize, mapWidth, mapHeight);
+
+		// Generate the edge tiles
+		var edgeTiles = mapGenerator.generateEdgeMap();
+
+		// Add the group of edge tiles to the state
+		add(edgeTiles);
 		add(enemyBox);
 		add(enemyBox.aimLine);
 		var spawnerWidth = 160,
@@ -100,22 +116,6 @@ class PlayState extends FlxState
 		behaviorManager = new EnemyBehaviorManager(redBoxes, blueBoxes, greenBoxes, enemyBox);
 		spawnManager.startSpawning();
 		gameUI = new GameUI(120);
-		var mapGenerator:MapGenerator;
-		var tileSize:Int = 16;
-		var mapWidth:Int;
-		var mapHeight:Int = 15;
-
-		// Calculate the number of tiles that fit horizontally based on the screen width
-		mapWidth = Math.ceil(FlxG.width / tileSize);
-
-		// Create the map generator
-		mapGenerator = new MapGenerator(tileSize, mapWidth, mapHeight);
-
-		// Generate the edge tiles
-		var edgeTiles = mapGenerator.generateEdgeMap();
-
-		// Add the group of edge tiles to the state
-		add(edgeTiles);
 		gameUI.addToState(this);
 	}
 

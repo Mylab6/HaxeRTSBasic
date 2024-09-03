@@ -20,7 +20,7 @@ class ApplicationMain
 
 		#if (js && html5)
 		#if (munit || utest)
-		lime.system.System.embed("HaxeRtsBasic", null, 480, 800);
+		lime.system.System.embed("HaxeRtsBasic", null, 900, 1200);
 		#end
 		#else
 		create(null);
@@ -35,7 +35,7 @@ class ApplicationMain
 		ManifestResources.init(config);
 		#end
 
-		app.meta["build"] = "67";
+		app.meta["build"] = "70";
 		app.meta["company"] = "HaxeFlixel";
 		app.meta["file"] = "HaxeRtsBasic";
 		app.meta["name"] = "HaxeRtsBasic";
@@ -54,14 +54,14 @@ class ApplicationMain
 			element: null,
 			frameRate: 60,
 			#if !web fullscreen: false, #end
-			height: 800,
+			height: 1200,
 			hidden: #if munit true #else false #end,
 			maximized: false,
 			minimized: false,
 			parameters: {},
 			resizable: true,
 			title: "HaxeRtsBasic",
-			width: 480,
+			width: 900,
 			x: null,
 			y: null,
 		};
